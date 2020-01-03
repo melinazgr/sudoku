@@ -1,6 +1,7 @@
 import sun.security.util.ArrayUtil;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  *
@@ -10,9 +11,6 @@ import java.util.ArrayList;
  */
 public class ModelSudoku extends Model{
 
-    /**
-     *
-     */
     int [][] display;
     int [][] solution;
     int [][] userDisplay;
@@ -23,48 +21,78 @@ public class ModelSudoku extends Model{
         text = text.replace('.', '0');
         String[] parts = text.split(",");
 
-
         display = parseSudokuValues(parts[0]);
         solution = parseSudokuValues(parts[1]);
         userDisplay = parseSudokuValues(parts[0]);
 
     }
 
-    //TODO check if x,y is in bounds
-    @Override
-    public int getDisplayCell(int x, int y) {
-        return userDisplay[x][y];
 
+    @Override
+    public int getDisplayCell(int row, int col) {
+        if((row >= 0 && row < getSize()) || (col >= 0 && col < getSize())){
+            return userDisplay[row][col];
+        }
+        return -1;
     }
 
     @Override
-    public void setCell(int x, int y, int z) {
-
+    public boolean setCell(int row, int col, int num) {
+        if(isValidCell(row, col, num)){
+            userDisplay[row][col] = num;
+            return true;
+        }
+        return false;
     }
 
     @Override
-    public boolean isValidCell(int x, int y, int z) {
-    return false;
+    public boolean isValidCell(int row, int col, int num) {
+        if(getColumn(col).contains(num) || getRow(row).contains(num) || getBox(col, row).contains(num))
+            return false;
+        return true;
     }
 
+    //TODO
     @Override
-    public int getColor(int x, int y) {
+    public int getColor(int row, int col) {
         return 0;
     }
 
+    //TODO
     @Override
-    public int getSum(int x, int y) {
+    public int getSum(int row, int col) {
         return 0;
     }
 
+    
     @Override
-    public int getSolution(int x, int y) {
-        return 0;
+    public int getSolution(int row, int col) {
+        if((row >= 0 && row < getSize()) || (col >= 0 && col < getSize())){
+            return solution[row][col];
+        }
+        return -1;
     }
 
     @Override
-    public ArrayList<Integer> getHint(int x, int y) {
-        return null;
+    public ArrayList<Integer> getHint(int row, int col) {
+        Collection<Integer> horizontal = getRow(row);
+        Collection<Integer> vertical = getColumn(col);
+        Collection<Integer> box = getBox(row, col);
+
+        Collection<Integer> union = new ArrayList<>();
+        union.addAll(vertical);
+        union.addAll(horizontal);
+        union.addAll(box);
+
+        ArrayList<Integer> numbers = new ArrayList<>();
+
+        for (int i = 1; i <= 9; i++) {
+            if(!union.contains(i)){
+                numbers.add(i);
+            }
+        }
+
+        return numbers;
     }
 
     @Override
@@ -77,7 +105,12 @@ public class ModelSudoku extends Model{
         return 3;
     }
 
-
+    /**
+     * Takes a string in this form "573268149298154367461793582342871956957436821816925734789342615125687493634519278"
+     * and converts in to 2 - dimensional integer array for each cell in the sudoku
+     * @param s the string containing the game
+     * @return the 2 - dimensional array
+     */
     private int[][] parseSudokuValues(String s) {
         int [][] data = new int[9][9];
 
@@ -85,7 +118,7 @@ public class ModelSudoku extends Model{
         for (char c: s.toCharArray()) {
             int row = i / 9;
             int col = i % 9;
-            data[row][col] = c;
+            data[row][col] = c - '0';
             i++;
         }
         return data;
@@ -125,7 +158,7 @@ public class ModelSudoku extends Model{
      * @param row
      * @return
      */
-    public ArrayList<Integer> getBox(int col, int row){
+    public ArrayList<Integer> getBox(int row, int col){
         ArrayList<Integer> list = new ArrayList<Integer>();
 
         int startCol = col / 3;

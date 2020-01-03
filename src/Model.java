@@ -16,30 +16,47 @@ public abstract class Model {
     public abstract void load(String file);
 
     /**
+     * Get user cell value at given coordinates.
      *
-     * @param x
-     * @param y
-     * @return
+     * @param row row coordinate
+     * @param col column coordinate
+     * @return cell value, -1 if coordinates out of bounds
      */
-    public abstract int getDisplayCell(int x, int y);
+    public abstract int getDisplayCell(int row, int col);
 
-    public abstract void setCell(int x, int y, int z);
+    public abstract boolean setCell(int row, int col, int z);
+
 
     /**
-     * @param x
-     * @param y
-     * @param z
+     * Checks if setting a number is a valid number for
+     * the sudoku at the current state of the game
+     * @param row
+     * @param col
+     * @param num
      * @return
      */
-    public abstract boolean isValidCell(int x, int y, int z);
+    public abstract boolean isValidCell(int row, int col, int num);
 
-    public abstract int getColor(int x, int y);
+    public abstract int getColor(int row, int col);
 
-    public abstract int getSum(int x, int y);
+    public abstract int getSum(int row, int col);
 
-    public abstract int getSolution(int x, int y);
+    /**
+     * Get solution cell value at given coordinates.
+     *
+     * @param row row coordinate
+     * @param col column coordinate
+     * @return cell value, -1 if coordinates out of bounds
+     */
+    public abstract int getSolution(int row, int col);
 
-    public abstract ArrayList<Integer> getHint (int x, int y);
+    /**
+     * Finds the elements allowed to be played in a cell with given coordinates
+     * @param row row coordinates
+     * @param col column coordinates
+     * @return an array list with all the allowed values
+     */
+    public abstract ArrayList<Integer> getHint (int row, int col);
 
     public abstract int getSize();
 
