@@ -30,6 +30,7 @@ public class Main extends Application {
         window.setTitle("Sudoku");
 
         Scene scene = new Scene(root);
+        scene.getStylesheets().add("app.css");
 
         window.setScene(scene);
         window.show();
@@ -41,7 +42,9 @@ public class Main extends Application {
      */
     private BorderPane createMainScene() {
         //create the logo text
-        Text logo = new Text("Sudoku");
+        Label logo = new Label("Sudoku");
+        logo.setId("mainLabel");
+
 
         //create language pane
         HBox languagePane = new HBox();
@@ -82,12 +85,6 @@ public class Main extends Application {
 
         root.setPrefSize(700, 700);
 
-        root.setStyle("-fx-padding: 10;" +
-                "-fx-border-style: solid inside;" +
-                "-fx-border-width: 2;" +
-                "-fx-border-insets: 5;" +
-                "-fx-border-radius: 5;" +
-                "-fx-border-color: blue;");
         return root;
     }
 }
