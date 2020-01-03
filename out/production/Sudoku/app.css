@@ -1,0 +1,9 @@
+.root{
+    -fx-padding: 20px;
+    -fx-background-image: url("background.jpg");
+}
+
+#mainLabel{
+    -fx-font-family: Verdana;
+    -fx-font-size: 30;
+}

@@ -1,17 +1,12 @@
 import javafx.application.Application;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ToolBar;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import org.omg.CORBA.VM_NONE;
 
 public class Main extends Application {
 
@@ -71,7 +66,13 @@ public class Main extends Application {
         Button buttonSud = new Button("Sudoku");
         centerPane.getChildren().add(buttonSud);
         buttonSud.setOnAction(e -> {
-            System.out.println("lets play");
+            ModelSudoku model = new ModelSudoku();
+            model.load("..3.....92....43..461.........8..9.6...4..8.........3...9....15.2.68..9.63.5..2.8," +
+                    "573268149298154367461793582342871956957436821816925734789342615125687493634519278");
+
+            GameSudokuView gameSudoku = new GameSudokuView(model);
+            window.setScene(gameSudoku.scene);
+
         });
 
         // set the alignment of the logo text

@@ -38,6 +38,8 @@ class ModelSudokuTest {
         assertEquals(model.getDisplayCell(0, 0), 0);
         assertEquals(model.getDisplayCell(0, 2), 3);
         assertEquals(model.getDisplayCell(4, 3), 4);
+        assertEquals(model.getDisplayCell(4, 6), 8);
+
 
     }
 
