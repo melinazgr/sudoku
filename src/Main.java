@@ -70,7 +70,7 @@ public class Main extends Application {
             model.load("..3.....92....43..461.........8..9.6...4..8.........3...9....15.2.68..9.63.5..2.8," +
                     "573268149298154367461793582342871956957436821816925734789342615125687493634519278");
 
-            GameSudokuView gameSudoku = new GameSudokuView(model);
+            GameSudokuView gameSudoku = new GameSudokuView(model, window);
             window.setScene(gameSudoku.scene);
 
         });

@@ -7,3 +7,18 @@
     -fx-font-family: Verdana;
     -fx-font-size: 30;
 }
+
+#original {
+    -fx-background-color: linear-gradient(#ABABAB, #CACACA);
+    -fx-font-size: 20;
+}
+
+#zero {
+    -fx-text-fill: transparent;
+}
+
+#rect {
+    -fx-fill: rgba(29, 0, 99, 0.2);
+    -fx-stroke: rgb(9, 7, 9);
+    -fx-stroke-width: 1.5;
+}
