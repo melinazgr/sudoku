@@ -1,4 +1,4 @@
-.root{
+.main{
     -fx-padding: 20px;
     -fx-background-image: url("background.jpg");
 }
@@ -21,4 +21,11 @@
     -fx-fill: rgba(29, 0, 99, 0.2);
     -fx-stroke: rgb(9, 7, 9);
     -fx-stroke-width: 1.5;
+}
+
+#popup{
+    -fx-background-color: rgba(20, 28, 79, 0.36);
+    -fx-padding: 10;
+    -fx-spacing: 10;
+    -fx-border-width: 2px;
 }

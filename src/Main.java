@@ -60,19 +60,18 @@ public class Main extends Application {
             System.out.println("greek");
         });
 
-
         // create main menu pane
         VBox centerPane = new VBox();
         Button buttonSud = new Button("Sudoku");
         centerPane.getChildren().add(buttonSud);
         buttonSud.setOnAction(e -> {
             ModelSudoku model = new ModelSudoku();
+            GameController controller = new GameController(model);
             model.load("..3.....92....43..461.........8..9.6...4..8.........3...9....15.2.68..9.63.5..2.8," +
                     "573268149298154367461793582342871956957436821816925734789342615125687493634519278");
 
-            GameSudokuView gameSudoku = new GameSudokuView(model, window);
+            GameSudokuView gameSudoku = new GameSudokuView(model, controller, window);
             window.setScene(gameSudoku.scene);
-
         });
 
         // set the alignment of the logo text
@@ -89,7 +88,3 @@ public class Main extends Application {
         return root;
     }
 }
-
-
-
-

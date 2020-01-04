@@ -24,9 +24,7 @@ public class ModelSudoku extends Model{
         display = parseSudokuValues(parts[0]);
         solution = parseSudokuValues(parts[1]);
         userDisplay = parseSudokuValues(parts[0]);
-
     }
-
 
     @Override
     public int getDisplayCell(int row, int col) {
@@ -50,6 +48,13 @@ public class ModelSudoku extends Model{
         if(getColumn(col).contains(num) || getRow(row).contains(num) || getBox(col, row).contains(num))
             return false;
         return true;
+    }
+
+    @Override
+    public void clearCell(int row, int col) {
+        if((row >= 0 && row < getSize()) || (col >= 0 && col < getSize())){
+            userDisplay[row][col] = display [row][col];
+        }
     }
 
     //TODO
@@ -172,5 +177,4 @@ public class ModelSudoku extends Model{
 
         return list;
     }
-
 }

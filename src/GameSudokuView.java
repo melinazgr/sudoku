@@ -1,11 +1,8 @@
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Popup;
@@ -16,80 +13,117 @@ public class GameSudokuView {
     public Scene scene;
 
     private Popup popup;
-    private Model model;
     private Stage window;
 
-    public GameSudokuView(Model model, Stage window){
+    private Model model;
+    private GameController controller;
+
+    //saves the last cell position the user clicked to get the popup
+    private int lastPopupCol;
+    private int lastPopupRow;
+
+    GridPane[] grid;
+    StackPane[] tiles;
+    Text[] cellText;
+
+    public GameSudokuView(Model model, GameController controller, Stage window) {
         this.model = model;
         this.window = window;
+        this.controller = controller;
         this.scene = createGamePanel();
-
         createPopup();
-
     }
 
     public Scene createGamePanel()
     {
-        VBox layout = new VBox();
-        HBox bottomPanel = new HBox();
+        Label logo = new Label("Sudoku");
+        logo.setId("mainLabel");
+
+        //create the main game panel
         GridPane gamePanel = new GridPane();
+        gamePanel.getStyleClass().add("main");
+
+        // distance between grid panels within the main grid panel
         gamePanel.setVgap(25);
         gamePanel.setHgap(25);
         gamePanel.setAlignment(Pos.CENTER);
 
-        Label logo = new Label("Sudoku");
-        logo.setId("mainLabel");
-
-        layout.getChildren().addAll(logo, gamePanel, bottomPanel);
-
+        //create the bottom action buttons
         Button hintButton = new Button("Hint");
         Button clearButton = new Button("Clear");
         Button mainMenuButton = new Button("Main Menu");
 
+        //bottom action buttons
         hintButton.setOnAction(e -> { System.out.println("hint"); });
         clearButton.setOnAction(e -> { System.out.println("clear"); });
         mainMenuButton.setOnAction(e -> { System.out.println("main menu"); });
 
+        HBox bottomPanel = new HBox();
         bottomPanel.getChildren().addAll(hintButton, clearButton, mainMenuButton);
 
-        int gridSize = model.getGroupSize() * model.getGroupSize();
+        VBox layout = new VBox();
+        layout.getChildren().addAll(logo, gamePanel, bottomPanel);
 
-        GridPane [] grid = new GridPane[gridSize];
-        StackPane [] tiles = new StackPane[model.getSize() * model.getSize()];
+        createGamePanel(gamePanel);
+
+        Scene scene = new Scene(layout, 700, 700);
+        scene.getStylesheets().add("app.css");
+        return scene;
+    }
+
+    private void createGamePanel(GridPane gamePanel) {
+        int gridSize = model.getGroupSize() * model.getGroupSize();
+        int tileSize = model.getSize() * model.getSize();
+
+        this.grid = new GridPane[gridSize];
+        this.tiles = new StackPane[tileSize];
+
+        cellText = new Text[tileSize];
 
         for (int i = 0; i < gridSize; i++) {
             grid[i] = new GridPane();
 
             for (int row = 0; row < model.getGroupSize(); row++) {
                 for (int col = 0; col < model.getGroupSize(); col++) {
-                    int index = ( i * gridSize) + ( row * model.getGroupSize()) + col;
 
-                    int cell = model.getDisplayCell((i / model.getGroupSize()) * model.getGroupSize() + row,
-                            (i % model.getGroupSize()) * model.getGroupSize() + col);
+                    int tempCol = (i % model.getGroupSize()) * model.getGroupSize() + col;
+                    int tempRow = (i / model.getGroupSize()) * model.getGroupSize() + row;
 
-                    Text text = new Text();
+                    int index = tempRow * this.model.getSize() + tempCol;
+                    int cell = model.getDisplayCell(tempRow, tempCol);
+
+                    //System.out.printf("[%d] (%d,%d) = %d\n",index, tempRow, tempCol, cell);
+
+
+                    cellText[index] = new Text();
 
                     if(cell != 0){
-                        text.setText(String.valueOf(cell));
-                        text.setId("original");
+                        cellText[index].setText(String.valueOf(cell));
+                        cellText[index].setId("original");
                     }
                     else {
-                        text.setId("zero");
+                        cellText[index].setText("");
+                        cellText[index].setId("zero");
                     }
 
                     Rectangle rect = new Rectangle(30,30, 50, 50);
                     rect.setId("rect");
                     rect.setOnMouseClicked(e -> {
                         if(!popup.isShowing()){
+                            popup.setX(e.getScreenX());
+                            popup.setY(e.getScreenY());
+
+                            lastPopupCol = tempCol;
+                            lastPopupRow = tempRow;
+
                             popup.show(window);
                         }
                     });
 
+                    //TODO  mve to Css
                     rect.setArcHeight(20);
                     rect.setArcWidth(20);
-                    //rect.setFill(Color.TRANSPARENT);
-                    //rect.setStroke(Color.BLUE);
-                    tiles[index] = new StackPane(rect, text);
+                    tiles[index] = new StackPane(rect, cellText[index]);
                     tiles[index].setPrefSize(70,70);
 
                     grid[i].add(tiles[index], col, row);
@@ -98,14 +132,29 @@ public class GameSudokuView {
 
             gamePanel.add(grid[i], i % model.getGroupSize(), i / model.getGroupSize());
         }
-
-        Scene scene = new Scene(layout, 700, 700);
-        scene.getStylesheets().add("app.css");
-        return scene;
     }
 
+    private void updateGamePanel(){
+        int tileSize = model.getSize() * model.getSize();
 
+        for (int index = 0; index < tileSize ; index++) {
+            int row = index / this.model.getSize();
+            int col = index % this.model.getSize();
 
+            int cell = this.model.getDisplayCell(row, col);
+
+            //System.out.printf("[%d] (%d,%d) = %d\n",index, row, col, cell);
+
+            if(cell != 0){
+                cellText[index].setText(String.valueOf(cell));
+                cellText[index].setId("original");
+            }
+            else {
+                cellText[index].setText("");
+                cellText[index].setId("zero");
+            }
+        }
+    }
 
     private void createPopup()
     {
@@ -113,6 +162,7 @@ public class GameSudokuView {
         popup = new Popup();
 
         HBox hbox = new HBox();
+        hbox.setId("popup");
 
         //TODO HINT
 
@@ -121,12 +171,13 @@ public class GameSudokuView {
             Button button = new Button(String.valueOf(i));
             hbox.getChildren().add(button);
 
+            int buttonIndex = i;
             button.setOnAction(e -> {
+                controller.setCell(lastPopupRow, lastPopupCol, buttonIndex);
+                updateGamePanel();
                 popup.hide();
             });
         }
-
-        hbox.setStyle("-fx-background-color: cornsilk; -fx-padding: 10;");
 
         popup.getContent().add(hbox);
 

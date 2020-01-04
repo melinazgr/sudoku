@@ -24,7 +24,7 @@ public abstract class Model {
      */
     public abstract int getDisplayCell(int row, int col);
 
-    public abstract boolean setCell(int row, int col, int z);
+    public abstract boolean setCell(int row, int col, int num);
 
 
     /**
@@ -65,4 +65,8 @@ public abstract class Model {
      * @return
      */
     public abstract int getGroupSize();
+
+    public abstract void clearCell(int row, int col);
 }
+
+

@@ -39,8 +39,6 @@ class ModelSudokuTest {
         assertEquals(model.getDisplayCell(0, 2), 3);
         assertEquals(model.getDisplayCell(4, 3), 4);
         assertEquals(model.getDisplayCell(4, 6), 8);
-
-
     }
 
     @Test
@@ -59,15 +57,13 @@ class ModelSudokuTest {
     }
 
     @Test
-    void getColor() {
-    }
+    void clearCell() {
+        assertEquals(model.getDisplayCell(0,1), 0);
+        assertEquals(model.setCell(0,1,8), true);
+        assertEquals(model.getDisplayCell(0,1), 8);
 
-    @Test
-    void getSum() {
-    }
-
-    @Test
-    void getSolution() {
+        model.clearCell(0,1);
+        assertEquals(model.getDisplayCell(0,1), 0);
     }
 
     @Test
@@ -85,14 +81,6 @@ class ModelSudokuTest {
         assertEquals(hints.contains(5), false);
         assertEquals(hints.contains(7), true);
         assertEquals(hints.contains(8), true);
-    }
-
-    @Test
-    void getSize() {
-    }
-
-    @Test
-    void getGroupSize() {
     }
 
     @Test
@@ -179,4 +167,12 @@ class ModelSudokuTest {
         assertEquals(box.get(8), 8, "box8");
     }
 
+    @Test
+    void getColor() {
+    }
+
+    @Test
+    void getSum() {
+    }
 }
+
