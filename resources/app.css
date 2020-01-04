@@ -25,6 +25,7 @@
 
 #popup{
     -fx-background-color: rgba(20, 28, 79, 0.36);
+    -fx-background-color: rgba(20, 28, 79, 0.44);
     -fx-padding: 10;
     -fx-spacing: 10;
     -fx-border-width: 2px;

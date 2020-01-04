@@ -1,6 +1,7 @@
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
@@ -8,11 +9,15 @@ import javafx.scene.text.Text;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 public class GameSudokuView {
 
     public Scene scene;
 
     private Popup popup;
+    private Button[] popupButtons;
     private Stage window;
 
     private Model model;
@@ -21,6 +26,8 @@ public class GameSudokuView {
     //saves the last cell position the user clicked to get the popup
     private int lastPopupCol;
     private int lastPopupRow;
+
+    private boolean hintEnabled;
 
     GridPane[] grid;
     StackPane[] tiles;
@@ -49,12 +56,14 @@ public class GameSudokuView {
         gamePanel.setAlignment(Pos.CENTER);
 
         //create the bottom action buttons
-        Button hintButton = new Button("Hint");
+        CheckBox hintButton = new CheckBox("Hint");
         Button clearButton = new Button("Clear");
         Button mainMenuButton = new Button("Main Menu");
 
         //bottom action buttons
-        hintButton.setOnAction(e -> { System.out.println("hint"); });
+        hintButton.setOnAction(e -> {
+            hintEnabled = hintButton.isSelected();
+        });
         clearButton.setOnAction(e -> { System.out.println("clear"); });
         mainMenuButton.setOnAction(e -> { System.out.println("main menu"); });
 
@@ -113,10 +122,7 @@ public class GameSudokuView {
                             popup.setX(e.getScreenX());
                             popup.setY(e.getScreenY());
 
-                            lastPopupCol = tempCol;
-                            lastPopupRow = tempRow;
-
-                            popup.show(window);
+                            showPopup(tempRow, tempCol);
                         }
                     });
 
@@ -132,6 +138,29 @@ public class GameSudokuView {
 
             gamePanel.add(grid[i], i % model.getGroupSize(), i / model.getGroupSize());
         }
+    }
+
+    private void showPopup(int row, int col) {
+
+        lastPopupCol = col;
+        lastPopupRow = row;
+
+        for (int i = 1; i <= 9; i++) {
+            popupButtons[i].setDisable(false);
+//            popupButtons[i].setId("popupOn");
+        }
+        if(hintEnabled){
+
+            ArrayList<Integer> hints = this.model.getHint(row, col);
+
+            for (int i = 1; i <= 9 ; i++) {
+                if(!hints.contains(i)){
+                    popupButtons[i].setDisable(true);
+//                    popupButtons[i].setId("popupOff");
+                }
+            }
+        }
+        popup.show(window);
     }
 
     private void updateGamePanel(){
@@ -164,15 +193,14 @@ public class GameSudokuView {
         HBox hbox = new HBox();
         hbox.setId("popup");
 
-        //TODO HINT
-
+        popupButtons = new Button[10];
         for (int i = 0; i <= 9; i++)
         {
-            Button button = new Button(String.valueOf(i));
-            hbox.getChildren().add(button);
+            popupButtons[i] = new Button(String.valueOf(i));
+            hbox.getChildren().add(popupButtons[i]);
 
             int buttonIndex = i;
-            button.setOnAction(e -> {
+            popupButtons[i].setOnAction(e -> {
                 controller.setCell(lastPopupRow, lastPopupCol, buttonIndex);
                 updateGamePanel();
                 popup.hide();
