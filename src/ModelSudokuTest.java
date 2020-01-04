@@ -165,6 +165,17 @@ class ModelSudokuTest {
         assertEquals(box.get(6), 2, "box6");
         assertEquals(box.get(7), 0, "box7");
         assertEquals(box.get(8), 8, "box8");
+
+        box = model.getBox(6,3);
+        assertEquals(box.get(0), 0, "box0");
+        assertEquals(box.get(1), 0, "box1");
+        assertEquals(box.get(2), 0, "box2");
+        assertEquals(box.get(3), 6, "box3");
+        assertEquals(box.get(4), 8, "box4");
+        assertEquals(box.get(5), 0, "box5");
+        assertEquals(box.get(6), 5, "box6");
+        assertEquals(box.get(7), 0, "box7");
+        assertEquals(box.get(8), 0, "box8");
     }
 
     @Test

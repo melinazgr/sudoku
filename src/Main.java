@@ -15,7 +15,7 @@ public class Main extends Application {
     }
 
     Stage window;
-    Scene menu, game;
+    Scene menu;
 
     @Override
     public void start(Stage primaryStage) {
@@ -24,10 +24,10 @@ public class Main extends Application {
         window = primaryStage;
         window.setTitle("Sudoku");
 
-        Scene scene = new Scene(root);
-        scene.getStylesheets().add("app.css");
+        menu = new Scene(root);
+        menu.getStylesheets().add("app.css");
 
-        window.setScene(scene);
+        window.setScene(menu);
         window.show();
     }
 
@@ -64,25 +64,7 @@ public class Main extends Application {
         VBox centerPane = new VBox();
         Button buttonSud = new Button("Sudoku");
         centerPane.getChildren().add(buttonSud);
-        buttonSud.setOnAction(e -> {
-            ModelSudoku model = new ModelSudoku();
-            GameController controller = new GameController(model);
-            String s =
-                    "..3.....9" +
-                            "2....43.." +
-                            "461......" +
-                            "...8..9.6" +
-                            "...4..8.." +
-                            ".......3." +
-                            "..9....15" +
-                            ".2.68..9." +
-                            "63.5..2.8," +
-                            "573268149298154367461793582342871956957436821816925734789342615125687493634519278";
-            model.load(s);
-
-            GameSudokuView gameSudoku = new GameSudokuView(model, controller, window);
-            window.setScene(gameSudoku.scene);
-        });
+        buttonSud.setOnAction(e -> sudokuGameButtonAction());
 
         // set the alignment of the logo text
         BorderPane.setAlignment(logo, Pos.TOP_CENTER);
@@ -96,5 +78,32 @@ public class Main extends Application {
         root.setPrefSize(700, 700);
 
         return root;
+    }
+
+    /**
+     * changes scenes in order to go to main sudoku game scene
+     */
+    private void sudokuGameButtonAction() {
+        ModelSudoku model = new ModelSudoku();
+        GameController controller = new GameController(model);
+        String s =
+                "..3.....9" +
+                        "2....43.." +
+                        "461......" +
+                        "...8..9.6" +
+                        "...4..8.." +
+                        ".......3." +
+                        "..9....15" +
+                        ".2.68..9." +
+                        "63.5..2.8," +
+                        "573268149298154367461793582342871956957436821816925734789342615125687493634519278";
+        model.load(s);
+
+        GameSudokuView gameSudoku = new GameSudokuView(model, controller, this);
+        window.setScene(gameSudoku.scene);
+    }
+
+    public void showMainMenu() {
+        window.setScene(this.menu);
     }
 }

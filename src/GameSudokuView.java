@@ -1,8 +1,6 @@
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -11,6 +9,7 @@ import javafx.stage.Stage;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class GameSudokuView {
 
@@ -18,9 +17,9 @@ public class GameSudokuView {
 
     private Popup popup;
     private Button[] popupButtons;
-    private Stage window;
 
     private Model model;
+    private Main mainWindow;
     private GameController controller;
 
     //saves the last cell position the user clicked to get the popup
@@ -29,13 +28,15 @@ public class GameSudokuView {
 
     private boolean hintEnabled;
 
+    private boolean isGameOver;
+
     GridPane[] grid;
     StackPane[] tiles;
     Text[] cellText;
 
-    public GameSudokuView(Model model, GameController controller, Stage window) {
+    public GameSudokuView(Model model, GameController controller, Main mainWindow) {
         this.model = model;
-        this.window = window;
+        this.mainWindow = mainWindow;
         this.controller = controller;
         this.scene = createGamePanel();
         createPopup();
@@ -62,9 +63,7 @@ public class GameSudokuView {
 
 
         //bottom action buttons
-        hintButton.setOnAction(e -> {
-            hintEnabled = hintButton.isSelected();
-        });
+        hintButton.setOnAction(e -> {hintEnabled = hintButton.isSelected();});
 
         clearButton.setOnAction(e -> {
             controller.clearGame();
@@ -74,10 +73,12 @@ public class GameSudokuView {
         solutionButton.setOnAction(e -> {
             controller.showSolution();
             updateGamePanel();
+            isGameOver = true;
+            this.model.gameOver();
         });
 
         mainMenuButton.setOnAction(e -> {
-            System.out.println("main menu");
+            this.mainWindow.showMainMenu();
         });
 
         HBox bottomPanel = new HBox();
@@ -172,7 +173,7 @@ public class GameSudokuView {
                 }
             }
         }
-        popup.show(window);
+        popup.show(mainWindow.window);
     }
 
 
@@ -193,6 +194,11 @@ public class GameSudokuView {
                 controller.setCell(lastPopupRow, lastPopupCol, buttonIndex);
                 updateGamePanel();
                 popup.hide();
+                if(this.model.gameOver()){
+                    if(showSuccessDialog()){
+                        this.mainWindow.showMainMenu();
+                    }
+                }
             });
         }
 
@@ -200,6 +206,19 @@ public class GameSudokuView {
 
         // set auto hide
         popup.setAutoHide(true);
+    }
+
+    private boolean showSuccessDialog() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Success!!");
+        alert.setHeaderText("Congratulations, you won the game!");
+        alert.setContentText("Would you like to go back to play a new game?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK) {
+            return true;
+        }
+        return false;
     }
 
     private void updateGamePanel() {

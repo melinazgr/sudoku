@@ -72,6 +72,11 @@ public abstract class Model {
 
     public abstract void solveSudoku();
 
+    /**
+     *
+     * @return true when game is finished successfully
+     *          false otherwise
+     */
     public abstract boolean gameOver();
 }
 
