@@ -8,6 +8,8 @@ import java.util.ArrayList;
  */
 public abstract class Model {
 
+    protected boolean wordoku;
+
     /**
      * loads sudoku numbers from the drive
      * @param file the name of the file to load
@@ -88,6 +90,24 @@ public abstract class Model {
      *          false otherwise
      */
     public abstract boolean gameOver();
+
+    public char toCharCell(int cell){
+        if(wordoku) {
+            if(cell != 0) {
+                return (char) ('A' + cell - 1);
+            }
+        }
+
+        else{
+            return (char) ('0' + cell);
+        }
+
+        return '\0';
+    }
+
+    public boolean isWordoku() {
+        return wordoku;
+    }
 }
 
 

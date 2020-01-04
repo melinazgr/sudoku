@@ -15,6 +15,14 @@ public class ModelSudoku extends Model{
     int [][] solution;
     int [][] userDisplay;
 
+    public ModelSudoku(boolean wordoku){
+        this.wordoku = wordoku;
+    }
+
+    public ModelSudoku(){
+        wordoku = false;
+    }
+
     @Override
     public void load(String text) {
 
@@ -33,6 +41,8 @@ public class ModelSudoku extends Model{
         }
         return -1;
     }
+
+
 
     @Override
     public boolean isOriginalCell(int row, int col) {

@@ -188,8 +188,11 @@ public class GameSudokuView {
         }
 
         if (cellValue != 0) {
-            cellText[index].setText(String.valueOf(cellValue));
-        } else {
+            char ch = this.model.toCharCell(cellValue);
+
+            cellText[index].setText(String.valueOf(ch));
+        }
+        else {
             cellText[index].setText("");
         }
     }
@@ -237,7 +240,9 @@ public class GameSudokuView {
         });
 
         for (int i = 1; i <= 9; i++) {
-            popupButtons[i] = new Button(String.valueOf(i));
+            char ch = this.model.toCharCell(i);
+
+            popupButtons[i] = new Button(String.valueOf(ch));
             hbox.getChildren().add(popupButtons[i]);
 
             int buttonIndex = i;

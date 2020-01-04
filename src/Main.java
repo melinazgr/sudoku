@@ -2,6 +2,7 @@ import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -14,8 +15,10 @@ public class Main extends Application {
         launch(args);
     }
 
-    Stage window;
-    Scene menu;
+    public Stage window;
+    private Scene menu;
+
+    private boolean wordokuGame;
 
     @Override
     public void start(Stage primaryStage) {
@@ -40,7 +43,6 @@ public class Main extends Application {
         Label logo = new Label("Sudoku");
         logo.setId("mainLabel");
 
-
         //create language pane
         HBox languagePane = new HBox();
         Label lang = new Label();
@@ -49,9 +51,7 @@ public class Main extends Application {
         Button buttonEn = new Button("English");
         Button buttonGr = new Button("Greek");
 
-        languagePane.getChildren().add(lang);
-        languagePane.getChildren().add(buttonEn);
-        languagePane.getChildren().add(buttonGr);
+        languagePane.getChildren().addAll(lang, buttonEn, buttonGr);
 
         buttonEn.setOnAction(e -> {
             System.out.println("english");
@@ -63,8 +63,14 @@ public class Main extends Application {
         // create main menu pane
         VBox centerPane = new VBox();
         Button buttonSud = new Button("Sudoku");
-        centerPane.getChildren().add(buttonSud);
+        CheckBox buttonWordoku = new CheckBox("Wordoku");
+
+        centerPane.getChildren().addAll(buttonSud, buttonWordoku);
         buttonSud.setOnAction(e -> sudokuGameButtonAction());
+
+        buttonWordoku.setOnAction(e -> {
+            wordokuGame = buttonWordoku.isSelected();
+        });
 
         // set the alignment of the logo text
         BorderPane.setAlignment(logo, Pos.TOP_CENTER);
@@ -84,7 +90,7 @@ public class Main extends Application {
      * changes scenes in order to go to main sudoku game scene
      */
     private void sudokuGameButtonAction() {
-        ModelSudoku model = new ModelSudoku();
+        ModelSudoku model = new ModelSudoku(wordokuGame);
         GameController controller = new GameController(model);
         String s =
                 "..3.....9" +
