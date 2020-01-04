@@ -24,9 +24,21 @@
 }
 
 #popup{
-    -fx-background-color: rgba(20, 28, 79, 0.36);
     -fx-background-color: rgba(20, 28, 79, 0.44);
     -fx-padding: 10;
     -fx-spacing: 10;
     -fx-border-width: 2px;
+}
+
+#popupOn{
+    -fx-text-fill: rgba(23, 105, 252, 0.83);
+    -fx-border-color: #000000;
+    -fx-border-radius: 5;
+    -fx-padding: 3 6 6 6;
+    -fx-font-weight: bold;
+}
+
+#popupOff{
+    -fx-effect: innershadow( three-pass-box , rgba(0.0,0.0,0.0,0.6) , 5.0, 0.0 , 0.0 , 1.0 );
+
 }

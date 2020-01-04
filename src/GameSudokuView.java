@@ -41,8 +41,7 @@ public class GameSudokuView {
         createPopup();
     }
 
-    public Scene createGamePanel()
-    {
+    public Scene createGamePanel() {
         Label logo = new Label("Sudoku");
         logo.setId("mainLabel");
 
@@ -58,17 +57,31 @@ public class GameSudokuView {
         //create the bottom action buttons
         CheckBox hintButton = new CheckBox("Hint");
         Button clearButton = new Button("Clear");
+        Button solutionButton = new Button("Solution");
         Button mainMenuButton = new Button("Main Menu");
+
 
         //bottom action buttons
         hintButton.setOnAction(e -> {
             hintEnabled = hintButton.isSelected();
         });
-        clearButton.setOnAction(e -> { System.out.println("clear"); });
-        mainMenuButton.setOnAction(e -> { System.out.println("main menu"); });
+
+        clearButton.setOnAction(e -> {
+            controller.clearGame();
+            updateGamePanel();
+        });
+
+        solutionButton.setOnAction(e -> {
+            controller.showSolution();
+            updateGamePanel();
+        });
+
+        mainMenuButton.setOnAction(e -> {
+            System.out.println("main menu");
+        });
 
         HBox bottomPanel = new HBox();
-        bottomPanel.getChildren().addAll(hintButton, clearButton, mainMenuButton);
+        bottomPanel.getChildren().addAll(hintButton, clearButton, solutionButton, mainMenuButton);
 
         VBox layout = new VBox();
         layout.getChildren().addAll(logo, gamePanel, bottomPanel);
@@ -106,19 +119,18 @@ public class GameSudokuView {
 
                     cellText[index] = new Text();
 
-                    if(cell != 0){
+                    if (cell != 0) {
                         cellText[index].setText(String.valueOf(cell));
                         cellText[index].setId("original");
-                    }
-                    else {
+                    } else {
                         cellText[index].setText("");
                         cellText[index].setId("zero");
                     }
 
-                    Rectangle rect = new Rectangle(30,30, 50, 50);
+                    Rectangle rect = new Rectangle(30, 30, 50, 50);
                     rect.setId("rect");
                     rect.setOnMouseClicked(e -> {
-                        if(!popup.isShowing()){
+                        if (!popup.isShowing()) {
                             popup.setX(e.getScreenX());
                             popup.setY(e.getScreenY());
 
@@ -130,7 +142,7 @@ public class GameSudokuView {
                     rect.setArcHeight(20);
                     rect.setArcWidth(20);
                     tiles[index] = new StackPane(rect, cellText[index]);
-                    tiles[index].setPrefSize(70,70);
+                    tiles[index].setPrefSize(70, 70);
 
                     grid[i].add(tiles[index], col, row);
                 }
@@ -145,48 +157,26 @@ public class GameSudokuView {
         lastPopupCol = col;
         lastPopupRow = row;
 
-        for (int i = 1; i <= 9; i++) {
+        for (int i = 0; i <= 9; i++) {
             popupButtons[i].setDisable(false);
-//            popupButtons[i].setId("popupOn");
+            popupButtons[i].setId("popupOn");
         }
-        if(hintEnabled){
+        if (hintEnabled) {
 
             ArrayList<Integer> hints = this.model.getHint(row, col);
 
-            for (int i = 1; i <= 9 ; i++) {
-                if(!hints.contains(i)){
+            for (int i = 1; i <= 9; i++) {
+                if (!hints.contains(i)) {
                     popupButtons[i].setDisable(true);
-//                    popupButtons[i].setId("popupOff");
+                    popupButtons[i].setId("popupOff");
                 }
             }
         }
         popup.show(window);
     }
 
-    private void updateGamePanel(){
-        int tileSize = model.getSize() * model.getSize();
 
-        for (int index = 0; index < tileSize ; index++) {
-            int row = index / this.model.getSize();
-            int col = index % this.model.getSize();
-
-            int cell = this.model.getDisplayCell(row, col);
-
-            //System.out.printf("[%d] (%d,%d) = %d\n",index, row, col, cell);
-
-            if(cell != 0){
-                cellText[index].setText(String.valueOf(cell));
-                cellText[index].setId("original");
-            }
-            else {
-                cellText[index].setText("");
-                cellText[index].setId("zero");
-            }
-        }
-    }
-
-    private void createPopup()
-    {
+    private void createPopup() {
         // create a popup
         popup = new Popup();
 
@@ -194,8 +184,7 @@ public class GameSudokuView {
         hbox.setId("popup");
 
         popupButtons = new Button[10];
-        for (int i = 0; i <= 9; i++)
-        {
+        for (int i = 0; i <= 9; i++) {
             popupButtons[i] = new Button(String.valueOf(i));
             hbox.getChildren().add(popupButtons[i]);
 
@@ -212,4 +201,26 @@ public class GameSudokuView {
         // set auto hide
         popup.setAutoHide(true);
     }
+
+    private void updateGamePanel() {
+        int tileSize = model.getSize() * model.getSize();
+
+        for (int index = 0; index < tileSize; index++) {
+            int row = index / this.model.getSize();
+            int col = index % this.model.getSize();
+
+            int cell = this.model.getDisplayCell(row, col);
+
+            //System.out.printf("[%d] (%d,%d) = %d\n",index, row, col, cell);
+
+            if (cell != 0) {
+                cellText[index].setText(String.valueOf(cell));
+                cellText[index].setId("original");
+            } else {
+                cellText[index].setText("");
+                cellText[index].setId("zero");
+            }
+        }
+    }
+
 }

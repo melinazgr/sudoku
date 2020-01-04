@@ -25,5 +25,11 @@ public class GameController {
         }
     }
 
+    public void clearGame() {
+        this.model.restartGame();
+    }
 
+    public void showSolution() {
+        this.model.solveSudoku();
+    }
 }

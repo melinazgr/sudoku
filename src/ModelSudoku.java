@@ -45,7 +45,7 @@ public class ModelSudoku extends Model{
 
     @Override
     public boolean isValidCell(int row, int col, int num) {
-        if(getColumn(col).contains(num) || getRow(row).contains(num) || getBox(col, row).contains(num))
+        if(getColumn(col).contains(num) || getRow(row).contains(num) || getBox(row, col).contains(num))
             return false;
         return true;
     }
@@ -55,6 +55,37 @@ public class ModelSudoku extends Model{
         if((row >= 0 && row < getSize()) || (col >= 0 && col < getSize())){
             userDisplay[row][col] = display [row][col];
         }
+    }
+
+    @Override
+    public void restartGame() {
+
+        for (int row = 0; row < getSize(); row++) {
+            for (int col = 0; col < getSize(); col++) {
+                userDisplay[row][col] = display[row][col];
+            }
+        }
+    }
+
+    @Override
+    public void solveSudoku() {
+        for (int row = 0; row < getSize(); row++) {
+            for (int col = 0; col < getSize(); col++) {
+                userDisplay[row][col] = solution[row][col];
+            }
+        }
+    }
+
+    @Override
+    public boolean gameOver() {
+        for (int row = 0; row < getSize(); row++) {
+            for (int col = 0; col < getSize(); col++) {
+                if(userDisplay[row][col] != solution[row][col]){
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     //TODO
@@ -177,4 +208,7 @@ public class ModelSudoku extends Model{
 
         return list;
     }
+
+
 }
+

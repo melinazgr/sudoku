@@ -67,6 +67,12 @@ public abstract class Model {
     public abstract int getGroupSize();
 
     public abstract void clearCell(int row, int col);
+
+    public abstract void restartGame ();
+
+    public abstract void solveSudoku();
+
+    public abstract boolean gameOver();
 }
 
 
