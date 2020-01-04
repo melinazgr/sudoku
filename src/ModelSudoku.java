@@ -35,6 +35,14 @@ public class ModelSudoku extends Model{
     }
 
     @Override
+    public boolean isOriginalCell(int row, int col) {
+        if((row >= 0 && row < getSize()) || (col >= 0 && col < getSize())){
+            return (display[row][col] != 0);
+        }
+        return false;
+    }
+
+    @Override
     public boolean setCell(int row, int col, int num) {
         if(isValidCell(row, col, num)){
             userDisplay[row][col] = num;

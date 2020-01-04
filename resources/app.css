@@ -9,12 +9,13 @@
 }
 
 #original {
-    -fx-background-color: linear-gradient(#ABABAB, #CACACA);
+    -fx-background-color: red;
     -fx-font-size: 20;
+    -fx-font-weight: bold;
 }
 
-#zero {
-    -fx-text-fill: transparent;
+#userCell {
+    -fx-font-size: 20;
 }
 
 #rect {

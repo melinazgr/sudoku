@@ -24,6 +24,16 @@ public abstract class Model {
      */
     public abstract int getDisplayCell(int row, int col);
 
+    /**
+     * Checks if a given cell is supposed to be displayed
+     * by default on the sudoku board or filled in by the user
+     * @param row row coordinate
+     * @param col column coordinate
+     * @return true if it is original
+     *         false otherwise
+     */
+    public abstract boolean isOriginalCell (int row, int col);
+
     public abstract boolean setCell(int row, int col, int num);
 
 
