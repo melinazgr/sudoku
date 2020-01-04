@@ -225,7 +225,18 @@ public class GameSudokuView {
         hbox.setId("popup");
 
         popupButtons = new Button[10];
-        for (int i = 0; i <= 9; i++) {
+
+        //clear cell button
+        popupButtons[0] = new Button("X");
+        hbox.getChildren().add(popupButtons[0]);
+
+        popupButtons[0].setOnAction(e -> {
+            controller.setCell(lastPopupRow, lastPopupCol, 0);
+            updateGamePanel();
+            popup.hide();
+        });
+
+        for (int i = 1; i <= 9; i++) {
             popupButtons[i] = new Button(String.valueOf(i));
             hbox.getChildren().add(popupButtons[i]);
 
