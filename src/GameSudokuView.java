@@ -1,3 +1,4 @@
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -5,9 +6,6 @@ import javafx.scene.layout.*;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Popup;
-import javafx.stage.Stage;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -136,10 +134,40 @@ public class GameSudokuView {
                     int cell = model.getDisplayCell(tempRow, tempCol);
 
                     cellText[index] = new Text();
+                    Text sumText = null;
 
-                    setCellValue(tempCol, tempRow, index, cell);
+                    int sum = this.model.getSum(tempRow, tempCol);
+
+                    if(sum != 0){
+                        sumText = new Text();
+                        sumText.setId("sumText");
+                        sumText.setText(String.valueOf(sum));
+                    }
+
+                    setCellValue(tempRow, tempCol, index, cell);
 
                     Rectangle rect = new Rectangle(30, 30, 50, 50);
+                    int color = this.model.getColor(tempRow, tempCol);
+
+                    switch(color)
+                    {
+                        case 1:
+                            rect.getStyleClass().add("rectColor1");
+                            break;
+                        case 2:
+                            rect.getStyleClass().add("rectColor2");
+                            break;
+                        case 3:
+                            rect.getStyleClass().add("rectColor3");
+                            break;
+                        case 4:
+                            rect.getStyleClass().add("rectColor4");
+                            break;
+                        default:
+                            rect.getStyleClass().add("rectColor");
+                        break;
+                    }
+
                     rect.setId("rect");
                     rect.setOnMouseClicked(e -> {
                         if (!popup.isShowing()) {
@@ -152,16 +180,23 @@ public class GameSudokuView {
                         }
                     });
 
-                    //TODO  mve to Css
+                    //TODO  move to Css
                     rect.setArcHeight(20);
                     rect.setArcWidth(20);
-                    tiles[index] = new StackPane(rect, cellText[index]);
+                    tiles[index] = new StackPane();
+
+                    if(sum != 0 ){
+                        tiles[index].setAlignment(sumText, Pos.TOP_LEFT);
+                        tiles[index].setMargin(sumText, new Insets(7, 0, 0, 11));
+                        tiles[index].getChildren().add(sumText);
+                    }
+
+                    tiles[index].getChildren().addAll(rect, cellText[index]);
                     tiles[index].setPrefSize(70, 70);
 
                     grid[i].add(tiles[index], col, row);
                 }
             }
-
             gamePanel.add(grid[i], i % model.getGroupSize(), i / model.getGroupSize());
         }
     }
@@ -175,11 +210,11 @@ public class GameSudokuView {
 
             int cell = this.model.getDisplayCell(row, col);
 
-            setCellValue(col, row, index, cell);
+            setCellValue(row, col, index, cell);
         }
     }
 
-    private void setCellValue(int col, int row, int index, int cellValue) {
+    private void setCellValue(int row, int col, int index, int cellValue) {
         if (this.model.isOriginalCell(row, col)){
             cellText[index].setId("original");
         }

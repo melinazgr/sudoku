@@ -62,11 +62,14 @@ public class Main extends Application {
 
         // create main menu pane
         VBox centerPane = new VBox();
+
+        Button buttonKillSud = new Button("Killer Sudoku");
         Button buttonSud = new Button("Sudoku");
         CheckBox buttonWordoku = new CheckBox("Wordoku");
 
-        centerPane.getChildren().addAll(buttonSud, buttonWordoku);
+        centerPane.getChildren().addAll(buttonSud, buttonKillSud, buttonWordoku);
         buttonSud.setOnAction(e -> sudokuGameButtonAction());
+        buttonKillSud.setOnAction(e -> killerSudokuGameButtonAction());
 
         buttonWordoku.setOnAction(e -> {
             wordokuGame = buttonWordoku.isSelected();
@@ -84,6 +87,21 @@ public class Main extends Application {
         root.setPrefSize(700, 700);
 
         return root;
+    }
+
+    private void killerSudokuGameButtonAction() {
+        ModelKillerSudoku model = new ModelKillerSudoku();
+        GameController controller = new GameController(model);
+        String s ="681974523245831697739652148857413962924786351316295784598127436473568219162349875," +
+                "15:00:00:16:00:09:00:11:18:06:00:16:00:00:03:07:00:00:15:19:00:10:06:00:00:10:00:" +
+                "00:07:00:00:00:09:12:00:03:12:00:10:26:00:00:00:13:00:00:10:00:00:00:12:00:00:10:" +
+                "10:00:22:00:00:15:08:00:00:00:18:00:00:00:00:19:00:21:00:00:00:07:00:00:00:00:00," +
+                "111223314223331214411241234421242431324112421314113324213332114244332413244224433";
+
+        model.load(s);
+
+        GameSudokuView gameSudoku = new GameSudokuView(model, controller, this);
+        window.setScene(gameSudoku.scene);
     }
 
     /**

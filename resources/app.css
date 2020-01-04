@@ -19,7 +19,6 @@
 }
 
 #rect {
-    -fx-fill: rgba(29, 0, 99, 0.2);
     -fx-stroke: rgb(9, 7, 9);
     -fx-stroke-width: 1.5;
 }
@@ -39,7 +38,32 @@
     -fx-font-weight: bold;
 }
 
-#popupOff{
-    -fx-effect: innershadow( three-pass-box , rgba(0.0,0.0,0.0,0.6) , 5.0, 0.0 , 0.0 , 1.0 );
+/*#popupOff{*/
+/*    -fx-effect: innershadow( three-pass-box , rgba(0.0,0.0,0.0,0.6) , 5.0, 0.0 , 0.0 , 1.0 );*/
+/*}*/
 
+#sumText{
+    -fx-font-weight: bold;
+    -fx-font-size: 10;
+    -fx-padding: 30 0;
+}
+
+.rectColor{
+    -fx-fill: rgba(0, 0, 0, 0.25);
+}
+
+.rectColor1{
+     -fx-fill: rgba(251, 180, 255, 0.52);
+ }
+
+.rectColor2{
+     -fx-fill: rgba(110, 228, 255, 0.52);
+ }
+
+.rectColor3{
+    -fx-fill: rgba(255, 172, 20, 0.52);
+}
+
+.rectColor4{
+    -fx-fill: rgba(250, 255, 69, 0.52);
 }
