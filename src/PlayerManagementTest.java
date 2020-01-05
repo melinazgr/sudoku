@@ -17,4 +17,21 @@ class PlayerManagementTest {
 
         assertEquals(players.getPlayerCount(), 1);
     }
+
+    @Test
+    void savePlayer(){
+        PlayerManagement players = new PlayerManagement();
+
+        Player pl = players.createPlayer("Melina");
+        Player pl2 = players.createPlayer("foobar");
+
+        players.save("test.txt");
+
+        players.load("test.txt");
+
+        assertEquals(players.getPlayerCount(), 2);
+
+        assertTrue(players.searchPlayer(pl.getName()));
+        assertTrue(players.searchPlayer(pl2.getName()));
+    }
 }
