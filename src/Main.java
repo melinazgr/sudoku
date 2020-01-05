@@ -152,3 +152,13 @@ public class Main extends Application {
         window.setScene(this.menu);
     }
 }
+
+//TODO: duidoku
+//TODO: language
+//TODO: load
+//TODO: make files
+//TODO: player management
+//TODO: player stats
+//TODO: save player stats
+//TODO: unit tests controller
+//TODO: comments

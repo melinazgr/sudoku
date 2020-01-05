@@ -4,7 +4,6 @@
  *
  * @author Melina Zikou
  */
-
 public class GameController {
 
     private Model model;
