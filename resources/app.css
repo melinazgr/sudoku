@@ -67,3 +67,14 @@
 .rectColor4{
     -fx-fill: rgba(250, 255, 69, 0.52);
 }
+
+.gameButtons{
+    -fx-background-color: rgba(26, 25, 252, 0.43);
+    -fx-border-color: rgb(0, 0, 0);
+    -fx-font-size: 30;
+    -fx-padding: 20;
+    -fx-font-weight: bold;
+    -fx-border-width: 0.5;
+
+
+}

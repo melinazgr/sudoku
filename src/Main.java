@@ -1,12 +1,11 @@
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -61,15 +60,37 @@ public class Main extends Application {
         });
 
         // create main menu pane
-        VBox centerPane = new VBox();
+        GridPane centerPane = new GridPane();
+
+        Label selectGame = new Label("Select Game");
+        selectGame.setId("select");
+
+        Button buttonSud = new Button("Sudoku");
+        buttonSud.getStyleClass().add("gameButtons");
 
         Button buttonKillSud = new Button("Killer Sudoku");
-        Button buttonSud = new Button("Sudoku");
+        buttonKillSud.getStyleClass().add("gameButtons");
+
         CheckBox buttonWordoku = new CheckBox("Wordoku");
 
-        centerPane.getChildren().addAll(buttonSud, buttonKillSud, buttonWordoku);
+        centerPane.setAlignment(Pos.TOP_CENTER);
+
+        centerPane.setMargin(buttonSud, new Insets(20,0,0,0));
+        buttonSud.setAlignment(Pos.CENTER);
+        buttonSud.setPrefSize(500, 100);
+
+        selectGame.setAlignment(Pos.TOP_LEFT);
+
+
+        centerPane.add(selectGame, 0, 0);
+        centerPane.add(buttonSud, 0,1);
+        centerPane.add(buttonKillSud, 0, 2);
+        centerPane.add(buttonWordoku, 0,3);
         buttonSud.setOnAction(e -> sudokuGameButtonAction());
         buttonKillSud.setOnAction(e -> killerSudokuGameButtonAction());
+
+        buttonSud.setLayoutX(70);
+        buttonSud.setLayoutY(80);
 
         buttonWordoku.setOnAction(e -> {
             wordokuGame = buttonWordoku.isSelected();
