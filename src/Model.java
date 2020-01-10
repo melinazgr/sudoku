@@ -29,10 +29,19 @@ public abstract class Model {
         return -1;
     }
 
+   // implemented in the ModelSudoku class
     public boolean isOriginalCell(int row, int col) {
         return false;
     }
 
+    /**
+     * Sets the value chosen by the user to a cell
+     * @param row row coordinate
+     * @param col column coordinate
+     * @param num cell value
+     * @return true if the number was put in the cell
+     *         false otherwise
+     */
     public boolean setCell(int row, int col, int num) {
         if(isValidCell(row, col, num)){
             userDisplay[row][col] = num;
@@ -41,20 +50,38 @@ public abstract class Model {
         return false;
     }
 
+    /**
+     * Checks if a number is allowed by the
+     * rules of sudoku to be put in a cell
+     * @param row row coordinate
+     * @param col column coordinate
+     * @param num  cell value
+     * @return true if it is valid
+     *         false otherwise
+     */
     public boolean isValidCell(int row, int col, int num) {
         if(getColumn(col).contains(num) || getRow(row).contains(num) || getBox(row, col).contains(num))
             return false;
         return true;
     }
 
+    // implemented in the ModelKillerSudoku class
     public int getColor(int row, int col) {
         return 0;
     }
 
+    // implemented in the ModelKillerSudoku class
     public int getSum(int row, int col) {
         return 0;
     }
 
+    /**
+     * Shows the solution of the game played
+     * @param row row coordinate
+     * @param col column coordinate
+     * @return the solution of the board if a row and column is valid
+     *         -1 otherwise
+     */
     public int getSolution(int row, int col) {
         if((row >= 0 && row < getSize()) || (col >= 0 && col < getSize())){
             return solution[row][col];
@@ -62,6 +89,13 @@ public abstract class Model {
         return -1;
     }
 
+    /**
+     *  Shows the available options of numbers
+     *  in a cell when the hint is enabled
+     * @param row row coordinate
+     * @param col column coordinate
+     * @return an ArrayList of the numbers available to be played
+     */
     public ArrayList<Integer> getHint(int row, int col) {
         Collection<Integer> horizontal = getRow(row);
         Collection<Integer> vertical = getColumn(col);
@@ -83,20 +117,35 @@ public abstract class Model {
         return numbers;
     }
 
+    /**
+     * @return the size of the blocks in the sudoku ( 9 by 9 board)
+     */
     public int getSize() {
         return 9;
     }
 
+    /**
+     * Each board is divided into smaller boxes.
+     * @return the number of cells in column/row of a box
+     */
     public int getGroupSize() {
         return 3;
     }
 
+    /**
+     * Clears a cell from the previous choice of hte user
+     * @param row row coordinate
+     * @param col column coordinate
+     */
     public void clearCell(int row, int col) {
         if((row >= 0 && row < getSize()) || (col >= 0 && col < getSize())){
             userDisplay[row][col] = display [row][col];
         }
     }
 
+    /**
+     * Clears the board from previous entries
+     */
     public void restartGame() {
 
         for (int row = 0; row < getSize(); row++) {
@@ -106,6 +155,9 @@ public abstract class Model {
         }
     }
 
+    /**
+     * Shows the solution of a game
+     */
     public void solveSudoku() {
         for (int row = 0; row < getSize(); row++) {
             for (int col = 0; col < getSize(); col++) {
@@ -114,6 +166,11 @@ public abstract class Model {
         }
     }
 
+    /**
+     * If all the cells are completed the game has ended
+     * @return true if the game is over
+     *         false otherwise
+     */
     public boolean gameOver() {
         for (int row = 0; row < getSize(); row++) {
             for (int col = 0; col < getSize(); col++) {
@@ -125,13 +182,17 @@ public abstract class Model {
         return true;
     }
 
+    /**
+     * @param cell number of a cell
+     * @return number of cell if game is sudoku
+     *         letter of cell if game is wordoku
+     */
     public char toCharCell(int cell){
         if(wordoku) {
             if(cell != 0) {
                 return (char) ('A' + cell - 1);
             }
         }
-
         else{
             return (char) ('0' + cell);
         }
@@ -164,8 +225,8 @@ public abstract class Model {
 
     /**
      * Returns all the registered elements in a column as given by the user
-     * @param col
-     * @return
+     * @param col column coordinate
+     * @return an Arraylist with the column elements
      */
     public ArrayList<Integer> getColumn(int col){
         ArrayList<Integer> list = new ArrayList<Integer>();
@@ -177,9 +238,9 @@ public abstract class Model {
     }
 
     /**
-     *
-     * @param row
-     * @return
+     * Returns all the registered elements in a row as given by the user
+     * @param row row coordinate
+     * @return an Arraylist with the row elements
      */
     public ArrayList<Integer> getRow(int row){
         ArrayList<Integer> list = new ArrayList<Integer>();
@@ -191,10 +252,10 @@ public abstract class Model {
     }
 
     /**
-     *
-     * @param col
-     * @param row
-     * @return
+     * Returns all the registered elements in a box as given by the user
+     * @param row row coordinate
+     * @param col column coordinate
+     * @return an ArrayList with the box elements
      */
     public ArrayList<Integer> getBox(int row, int col){
         ArrayList<Integer> list = new ArrayList<Integer>();
@@ -211,5 +272,3 @@ public abstract class Model {
         return list;
     }
 }
-
-

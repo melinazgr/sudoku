@@ -45,6 +45,13 @@ public class ModelKillerSudoku extends Model {
         return data;
     }
 
+    /**
+     * Returns the number registered to a color as given by the file
+     * @param row row coordinate
+     * @param col column coordinate
+     * @return the color number if column and row are valid
+     *         false otherwise
+     */
     @Override
     public int getColor(int row, int col) {
         if((row >= 0 && row < getSize()) || (col >= 0 && col < getSize())){
@@ -53,6 +60,13 @@ public class ModelKillerSudoku extends Model {
         return -1;
     }
 
+    /**
+     * Returns the sum of the killer sudoku game on each cell as given by the file
+     * @param row row coordinate
+     * @param col column coordinate
+     * @return the sum number if column and row are valid
+     *         false otherwise
+     */
     @Override
     public int getSum(int row, int col) {
         if((row >= 0 && row < getSize()) || (col >= 0 && col < getSize())){
@@ -60,5 +74,4 @@ public class ModelKillerSudoku extends Model {
         }
         return -1;
     }
-
 }

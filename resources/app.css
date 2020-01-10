@@ -1,52 +1,53 @@
+/*main background on each scene*/
 .main{
     -fx-padding: 20px;
-    -fx-background-image: url("background.jpg");
+    /*-fx-background-image: url("background.jpg");*/
 }
 
+/* Sudoku label on main  */
 #mainLabel{
     -fx-font-family: Verdana;
     -fx-font-size: 30;
 }
 
+/* cells displayed at the start of the game sudoku */
 #original {
-    -fx-background-color: red;
     -fx-font-size: 20;
     -fx-font-weight: bold;
 }
 
+/* cells chosen by the user */
 #userCell {
     -fx-font-size: 20;
 }
 
+/* cell rectangles*/
 #rect {
     -fx-stroke: rgb(9, 7, 9);
     -fx-stroke-width: 1.5;
+
 }
 
+/* popup styling*/
 #popup{
-    -fx-background-color: rgba(20, 28, 79, 0.44);
+    -fx-background-color: rgba(255, 100, 30, 0.62);
     -fx-padding: 10;
+    -fx-border-radius: 5;
+    -fx-font-weight: bold;
+    -fx-border-color: #000000;
+    -fx-padding: 3 6 6 6;
     -fx-spacing: 10;
     -fx-border-width: 2px;
 }
 
-#popupOn{
-    -fx-text-fill: rgba(23, 105, 252, 0.83);
-    -fx-border-color: #000000;
-    -fx-border-radius: 5;
-    -fx-padding: 3 6 6 6;
-    -fx-font-weight: bold;
-}
-
-/*#popupOff{*/
-/*    -fx-effect: innershadow( three-pass-box , rgba(0.0,0.0,0.0,0.6) , 5.0, 0.0 , 0.0 , 1.0 );*/
-/*}*/
-
+/* sum text on killer sudoku styling*/
 #sumText{
     -fx-font-weight: bold;
     -fx-font-size: 10;
     -fx-padding: 30 0;
 }
+
+/* colors of rectangles used as cells*/
 
 .rectColor{
     -fx-fill: rgba(0, 0, 0, 0.25);
@@ -68,13 +69,18 @@
     -fx-fill: rgba(250, 255, 69, 0.52);
 }
 
+/* main menu game buttons*/
 .gameButtons{
-    -fx-background-color: #990033;
+    -fx-background-color: rgba(136, 7, 15, 0.67);
     -fx-border-color: rgb(0, 0, 0);
     -fx-font-size: 30;
     -fx-padding: 20;
     -fx-font-weight: bold;
     -fx-border-width: 0.5;
+}
 
+/* "select game" label on main menu*/
+#selectGameLabel {
+    -fx-font-weight: bold;
 
 }
