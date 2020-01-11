@@ -95,9 +95,17 @@ public class PlayerManagement {
                 p = (Player) in.readObject();
                 playerMap.put(p.getName(), p);
             }
-        }
-        catch (ClassNotFoundException | IOException e) {
+        } catch(FileNotFoundException e){
+            // if the file does not exist, it is created
+            save(path);
+        } catch (ClassNotFoundException | IOException e) {
             e.printStackTrace();
         }
     }
+
+    public Object [] getPlayerNames(){
+        return playerMap.keySet().toArray();
+    }
+
+
 }

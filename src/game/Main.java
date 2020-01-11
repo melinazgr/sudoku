@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
     public Stage window;
-    GameMenu menu;
+    private GameMenu menu;
 
     //initiation of the game
     public static void main(String[] args) {
@@ -27,7 +27,13 @@ public class Main extends Application {
 
         window.setTitle("Sudoku");
 
+        window.setOnCloseRequest(e -> closeProgram());
+
         menu.showMainMenu();
+    }
+
+    private void closeProgram() {
+        menu.saveState();
     }
 }
 

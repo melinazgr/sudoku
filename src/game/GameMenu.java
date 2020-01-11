@@ -1,9 +1,11 @@
 package game;
+import javafx.beans.value.ChangeListener;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -19,12 +21,17 @@ import java.io.IOException;
  */
 public class GameMenu implements MenuInterface {
 
+    private final int GAME_COUNT = 10;
+    private final String PLAYER_PATH = "players.bin";
+    private final String DEFAULT_PLAYER_NAME = "Anonymous";
+
     private boolean wordokuGame;
     private Stage window;
     private BorderPane mainPane;
     private Scene menuScene;
     private PlayerManagement playerManagement;
     private FileManagement fileManagement;
+    private ComboBox playerBox;
 
     /**
      * Implements essential actions for the game to begin
@@ -32,12 +39,9 @@ public class GameMenu implements MenuInterface {
      */
     public GameMenu(Stage window) {
         this.window = window;
-        mainPane = createMenuScene();
-        menuScene = new Scene(mainPane);
-        menuScene.getStylesheets().add("app.css");
 
         playerManagement = new PlayerManagement();
-        playerManagement.load("players.bin");
+        playerManagement.load(PLAYER_PATH);
 
         fileManagement = new FileManagement();
 
@@ -48,6 +52,10 @@ public class GameMenu implements MenuInterface {
             //TODO display error
             e.printStackTrace();
         }
+
+        mainPane = createMenuScene();
+        menuScene = new Scene(mainPane);
+        menuScene.getStylesheets().add("app.css");
     }
 
     /**
@@ -61,24 +69,6 @@ public class GameMenu implements MenuInterface {
         logoPane.getChildren().add(logo);
         logo.setId("mainLabel");
         logoPane.getStyleClass().add("main");
-
-
-        //create language pane
-        HBox languagePane = new HBox();
-        Label lang = new Label();
-        lang.setText("Language  ");
-
-        Button buttonEn = new Button("English");
-        Button buttonGr = new Button("Greek");
-
-        languagePane.getChildren().addAll(lang, buttonEn, buttonGr);
-
-        buttonEn.setOnAction(e -> {
-            System.out.println("english");
-        });
-        buttonGr.setOnAction(e -> {
-            System.out.println("greek");
-        });
 
         // create main menu pane
         GridPane centerPane = new GridPane();
@@ -138,6 +128,42 @@ public class GameMenu implements MenuInterface {
         // set the alignment of the logo text
         BorderPane.setAlignment(logo, Pos.TOP_CENTER);
 
+        // create player pane
+        HBox playerPane = new HBox();
+        Label selectPlayer = new Label();
+        selectPlayer.setText("Select Player");
+        selectPlayer.setId("playersId");
+
+        playerBox = new ComboBox();
+        playerBox.getItems().add(DEFAULT_PLAYER_NAME);
+        playerBox.getItems().addAll(playerManagement.getPlayerNames());
+
+        playerBox.setPromptText("Select Player");
+        playerBox.setEditable(true);
+
+        playerBox.getSelectionModel().selectFirst();
+
+
+        playerPane.getChildren().addAll(selectPlayer, playerBox);
+        centerPane.add(playerPane, 0, 5);
+
+        //create language pane
+        HBox languagePane = new HBox();
+        Label lang = new Label();
+        lang.setText("Language  ");
+
+        Button buttonEn = new Button("English");
+        Button buttonGr = new Button("Greek");
+
+        languagePane.getChildren().addAll(lang, buttonEn, buttonGr);
+
+        buttonEn.setOnAction(e -> {
+            System.out.println("english");
+        });
+        buttonGr.setOnAction(e -> {
+            System.out.println("greek");
+        });
+
         BorderPane root = new BorderPane();
 
         root.setTop(logo);
@@ -155,16 +181,10 @@ public class GameMenu implements MenuInterface {
     private void killerSudokuGameButtonAction() {
         ModelKillerSudoku model = new ModelKillerSudoku();
         GameController controller = new GameController(model);
-        String s = "681974523245831697739652148857413962924786351316295784598127436473568219162349875," +
-                "15:00:00:16:00:09:00:11:18:06:00:16:00:00:03:07:00:00:15:19:00:10:06:00:00:10:00:" +
-                "00:07:00:00:00:09:12:00:03:12:00:10:26:00:00:00:13:00:00:10:00:00:00:12:00:00:10:" +
-                "10:00:22:00:00:15:08:00:00:00:18:00:00:00:00:19:00:21:00:00:00:07:00:00:00:00:00," +
-                "111223314223331214411241234421242431324112421314113324213332114244332413244224433";
 
-        model.load(s);
+        GameType gameType = GameType.KillerSudoku;
 
-        GameSudokuView gameSudoku = new GameSudokuView(model, controller, window,this);
-        window.setScene(gameSudoku.scene);
+        chooseGame(model, controller, gameType);
     }
 
     /**
@@ -173,22 +193,46 @@ public class GameMenu implements MenuInterface {
     private void sudokuGameButtonAction() {
         ModelSudoku model = new ModelSudoku(wordokuGame);
         GameController controller = new GameController(model);
-        String s =
-                "..3.....9" +
-                        "2....43.." +
-                        "461......" +
-                        "...8..9.6" +
-                        "...4..8.." +
-                        ".......3." +
-                        "..9....15" +
-                        ".2.68..9." +
-                        "63.5..2.8," +
-                        "573268149298154367461793582342871956957436821816925734789342615125687493634519278";
-        model.load(s);
 
-        GameSudokuView gameSudoku = new GameSudokuView(model, controller, window, this);
-        this.window.setScene(gameSudoku.scene);
+        GameType gameType = GameType.Sudoku;
+
+        chooseGame(model, controller, gameType);
+    }
+
+    /**
+     * TODO
+     * @param model
+     * @param controller
+     * @param gameType
+     */
+    private void chooseGame(Model model, GameController controller, GameType gameType) {
         Player player = new Player();
+
+        if (playerBox.getValue() != null && !playerBox.getValue().toString().isEmpty()){
+            String name = playerBox.getValue().toString();
+            if(!name.equals(DEFAULT_PLAYER_NAME)){
+                if(!playerManagement.searchPlayer(name)){
+                    player = playerManagement.createPlayer(name);
+                    playerBox.getItems().add(name);
+                }
+            else{
+                    player = playerManagement.getPlayer(name);
+                }
+            }
+        }
+
+        // choose a game to play
+        int nextGame = player.randomGame(gameType, GAME_COUNT);
+
+        if (nextGame != -1) {
+            GameDefinition game = fileManagement.getGame(nextGame, gameType);
+            model.load(game);
+
+            player.addGame(nextGame, gameType);
+
+            GameSudokuView gameSudoku = new GameSudokuView(model, controller, window, this);
+            window.setScene(gameSudoku.scene);
+        }
     }
 
     /**
@@ -198,5 +242,12 @@ public class GameMenu implements MenuInterface {
     public void showMainMenu() {
         window.setScene(this.menuScene);
         window.show();
+    }
+
+    /**
+     * TODO
+     */
+    public void saveState() {
+        playerManagement.save(PLAYER_PATH);
     }
 }

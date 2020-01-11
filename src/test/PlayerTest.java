@@ -42,5 +42,19 @@ class PlayerTest {
         assertTrue(games.contains(8));
         assertTrue(games.contains(9));
         assertTrue(games.contains(10));
+
+        int game = player.randomGame(GameType.Sudoku, 10);
+
+        assertNotEquals(game, -1);
+
+        player.addGame(2, GameType.Sudoku);
+        player.addGame(6, GameType.Sudoku);
+        player.addGame(7, GameType.Sudoku);
+        player.addGame(8, GameType.Sudoku);
+        player.addGame(9, GameType.Sudoku);
+        player.addGame(10, GameType.Sudoku);
+
+        game = player.randomGame(GameType.Sudoku, 10);
+        assertEquals(game, -1);
     }
 }

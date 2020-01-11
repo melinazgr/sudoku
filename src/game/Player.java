@@ -6,6 +6,7 @@ import game.GameType;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Random;
 
 /**
  * Class to manage player names
@@ -101,5 +102,25 @@ public class Player implements Serializable {
             }
         }
         return notPlayed;
+    }
+
+    /**
+     * Chooses randomly a game from the games that have not been played.
+     * @param gameType Sudoku or Killer sudoku
+     * @param count number of games available
+     * @return game to be played
+     *          -1 if none available
+     */
+    public int randomGame(GameType gameType, int count){
+        ArrayList <Integer> notPlayed = gamesNotPlayed(gameType, count);
+
+        if(!notPlayed.isEmpty()){
+            Random rand = new Random();
+
+            int randGame = rand.nextInt(notPlayed.size());
+
+            return notPlayed.get(randGame);
+        }
+        return -1;
     }
 }
