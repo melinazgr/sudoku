@@ -1,5 +1,7 @@
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Class to manage player names
@@ -71,5 +73,29 @@ public class Player implements Serializable {
             }
         }
         return null;
+    }
+
+    /**
+     * Create an ArrayList with all the game ids of games not played.
+     * Ids start at 1.
+     * @param gameType type of the game
+     * @param count number of available game ids
+     * @return a list with all the games not played
+     */
+    public ArrayList <Integer> gamesNotPlayed(GameType gameType, int count){
+        ArrayList <Integer> notPlayed = new ArrayList<>();
+        boolean [] boolNotPlayed = new boolean[count + 1];
+        Arrays.fill(boolNotPlayed, true);
+        for (GameStatistics g: games) {
+            if (g.getGameType() == gameType) {
+                boolNotPlayed[g.getId()] = false;
+            }
+        }
+        for (int i = 1; i < count + 1 ; i++) {
+            if(boolNotPlayed[i]){
+                notPlayed.add(i);
+            }
+        }
+        return notPlayed;
     }
 }

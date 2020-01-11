@@ -21,6 +21,7 @@ public abstract class Model {
      *
      */
     public abstract void load(String text);
+    public abstract void load(GameDefinition game);
 
     public int getDisplayCell(int row, int col) {
         if((row >= 0 && row < getSize()) || (col >= 0 && col < getSize())){
@@ -28,6 +29,8 @@ public abstract class Model {
         }
         return -1;
     }
+
+
 
    // implemented in the ModelSudoku class
     public boolean isOriginalCell(int row, int col) {

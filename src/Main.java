@@ -1,16 +1,10 @@
 import javafx.application.Application;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.layout.*;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 /**
  * Main class of the program
+ * Complete class diagram and association shown in
+ * <img src= "http://yuml.me/1fadf7c0.png" alt = "CLass diagram"></img>
  * @author Melina Zikou
  */
 public class Main extends Application {

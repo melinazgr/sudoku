@@ -30,7 +30,7 @@
 
 /* popup styling*/
 #popup{
-    -fx-background-color: rgba(255, 100, 30, 0.62);
+    -fx-background-color: rgba(0, 0, 0, 0.35);
     -fx-padding: 10;
     -fx-border-radius: 5;
     -fx-font-weight: bold;

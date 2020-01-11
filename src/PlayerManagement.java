@@ -44,6 +44,19 @@ public class PlayerManagement {
     }
 
     /**
+     * Get the player object
+     * @param name of the player
+     * @return the player if it exists
+     *         null otherwise
+     */
+    public Player getPlayer(String name){
+        if (searchPlayer(name)){
+            return playerMap.get(name);
+        }
+        return null;
+    }
+
+    /**
      * Counts how many players exist
      * @return the number of the players
      */

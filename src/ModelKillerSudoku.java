@@ -30,6 +30,16 @@ public class ModelKillerSudoku extends Model {
         display = new int [getSize()][getSize()];
     }
 
+    @Override
+    public void load(GameDefinition game) {
+        solution = game.getSolution();
+        color = game.getColor();
+        sum = game.getSum();
+
+        userDisplay = new int[getSize()][getSize()];
+        display = new int [getSize()][getSize()];
+    }
+
     private int[][] parseSudokuSumValues (String s) {
         int [][] data = new int[9][9];
 

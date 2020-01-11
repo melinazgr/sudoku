@@ -3,4 +3,9 @@ public class ModelDuidoku extends Model {
     public void load(String text) {
 
     }
+
+    @Override
+    public void load(GameDefinition game) {
+
+    }
 }

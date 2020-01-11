@@ -1,3 +1,5 @@
+import java.io.Serializable;
+
 /**
  * enum that stores which game type is played by a player
  */
@@ -12,7 +14,7 @@ enum GameType{
  * in order to save player statistics
  * @author Melina Zikou
  */
-public class GameStatistics {
+public class GameStatistics  implements Serializable {
 
     //number id of games played
     //between the 10 games saved
