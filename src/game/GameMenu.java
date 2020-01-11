@@ -1,3 +1,4 @@
+package game;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -9,23 +10,49 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import java.io.IOException;
 
+/**
+ * Creates and organises the main menu page.
+ *
+ * @author Melina Zikou
+ */
 public class GameMenu implements MenuInterface {
 
     private boolean wordokuGame;
     private Stage window;
     private BorderPane mainPane;
     private Scene menuScene;
+    private PlayerManagement playerManagement;
+    private FileManagement fileManagement;
 
+    /**
+     * Implements essential actions for the game to begin
+     * @param window stage window
+     */
     public GameMenu(Stage window) {
         this.window = window;
         mainPane = createMenuScene();
         menuScene = new Scene(mainPane);
         menuScene.getStylesheets().add("app.css");
+
+        playerManagement = new PlayerManagement();
+        playerManagement.load("players.bin");
+
+        fileManagement = new FileManagement();
+
+        try{
+            fileManagement.load(".\\resources\\games.csv");
+        }
+        catch (IOException e) {
+            //TODO display error
+            e.printStackTrace();
+        }
     }
 
     /**
-     * @return
+     * Creates all the buttons in the main menu and handles their actions
+     * @return the panel
      */
     private BorderPane createMenuScene() {
         //create the logo text
@@ -57,20 +84,26 @@ public class GameMenu implements MenuInterface {
         GridPane centerPane = new GridPane();
         centerPane.getStyleClass().add("main");
 
+        // select game label
         Label selectGame = new Label("Select Game");
         selectGame.setId("selectGameLabel");
 
+        // button Sudoku
         Button buttonSud = new Button("Sudoku");
         buttonSud.getStyleClass().add("gameButtons");
 
+        // button killer sudoku
         Button buttonKillSud = new Button("Killer Sudoku");
         buttonKillSud.getStyleClass().add("gameButtons");
 
+        // button duidoku
         Button buttonDuidoku = new Button("Duidoku");
         buttonDuidoku.getStyleClass().add("gameButtons");
 
+        // button/checkbox wordoku
         CheckBox buttonWordoku = new CheckBox("Wordoku");
 
+        // set position of each button
         centerPane.setAlignment(Pos.TOP_CENTER);
 
         centerPane.setMargin(buttonSud, new Insets(20, 0, 0, 0));
@@ -116,6 +149,9 @@ public class GameMenu implements MenuInterface {
         return root;
     }
 
+    /**
+     *  Action when button Killer Sudoku is clicked
+     */
     private void killerSudokuGameButtonAction() {
         ModelKillerSudoku model = new ModelKillerSudoku();
         GameController controller = new GameController(model);
@@ -131,6 +167,9 @@ public class GameMenu implements MenuInterface {
         window.setScene(gameSudoku.scene);
     }
 
+    /**
+     *  Action when button Sudoku is clicked
+     */
     private void sudokuGameButtonAction() {
         ModelSudoku model = new ModelSudoku(wordokuGame);
         GameController controller = new GameController(model);
@@ -149,9 +188,12 @@ public class GameMenu implements MenuInterface {
 
         GameSudokuView gameSudoku = new GameSudokuView(model, controller, window, this);
         this.window.setScene(gameSudoku.scene);
+        Player player = new Player();
     }
 
-
+    /**
+     * Shows the main menu
+     */
     @Override
     public void showMainMenu() {
         window.setScene(this.menuScene);

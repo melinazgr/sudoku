@@ -1,3 +1,7 @@
+package game;
+
+import game.GameDefinition;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -30,9 +34,7 @@ public abstract class Model {
         return -1;
     }
 
-
-
-   // implemented in the ModelSudoku class
+   // implemented in the game.ModelSudoku class
     public boolean isOriginalCell(int row, int col) {
         return false;
     }
@@ -68,12 +70,12 @@ public abstract class Model {
         return true;
     }
 
-    // implemented in the ModelKillerSudoku class
+    // implemented in the game.ModelKillerSudoku class
     public int getColor(int row, int col) {
         return 0;
     }
 
-    // implemented in the ModelKillerSudoku class
+    // implemented in the game.ModelKillerSudoku class
     public int getSum(int row, int col) {
         return 0;
     }

@@ -1,20 +1,43 @@
+package game;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Loads game information from the drive and organises it
+ * proper form in order to be used to create the games.
+ *
+ * @author Melina Zikou
+ */
 public class FileManagement {
 
+    //maps game id with a GameDefinition object which contains all the information about the game table
     private Map <String, GameDefinition> gameMap;
 
+    // constructor that creates the map
     public FileManagement(){
         gameMap = new HashMap <String, GameDefinition>() ;
     }
 
+    /**
+     * Gets the information for the game tale
+     * @param id 1 - 10 marking the available games
+     * @param gameType Sudoku, KillerSudoku, Duidoku
+     * @return the game to be played
+     */
     public GameDefinition getGame(int id, GameType gameType){
         String key = gameType.toString() + id;
         return gameMap.get(key);
     }
 
+    /**
+     * Loads the csv file with game information.
+     * csv file format:
+     * GameType (1 Sudoku, 2 KillerSudoku), id (1 -10), display, solution [first 10 lines - Sudoku game]
+     *                                                           solution, sum, color [last 10 lines - KillerSudoku game]
+     * @param path file path
+     * @throws IOException in case the file could not be opened
+     */
     public void load(String path) throws IOException {
 
             try (BufferedReader in = new BufferedReader(new FileReader(path))){
@@ -56,7 +79,7 @@ public class FileManagement {
     }
 
     /**
-     * Takes a string in this form "573268149298154367461793582342871956957436821816925734789342615125687493634519278"
+     *Takes a string in this form "573268149298154367461793582342871956957436821816925734789342615125687493634519278"
      * and converts in to 2 - dimensional integer array for each cell in the sudoku
      * @param s the string containing the game
      * @return the 2 - dimensional array
@@ -74,6 +97,18 @@ public class FileManagement {
         return data;
     }
 
+    /**
+     * Takes a string in this form wich contains the sum of each cell
+     *  "5:00:00:16:00:09:00:11:18:06:00:16:00:00:03:07:00:00:15:19:00:10:06:00:00:10:00:
+     *  00:07:00:00:00:09:12:00:03:12:00:10:26:00:00:00:13:00:00:10:00:00:00:12:00:00:10:
+     *  10:00:22:00:00:15:08:00:00:00:18:00:00:00:00:19:00:21:00:00:00:07:00:00:00:00:00"
+     *  and converts in to 2 - dimensional integer array for each cell in the sudoku.
+     *
+     * 00 indicates zero sum
+     *
+     * @param s the string containing the sums
+     * @return 2 - dimensinal array with sums
+     */
     private int[][] parseSudokuSumValues (String s) {
         int [][] data = new int[9][9];
 

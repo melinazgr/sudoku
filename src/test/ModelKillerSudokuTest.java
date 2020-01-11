@@ -1,4 +1,8 @@
+package test;
+
+import game.*;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -28,18 +32,18 @@ model = new ModelKillerSudoku();
 
     @Test
     void getSum() {
-        assertEquals(model.getSum(0, 0), 15);
-        assertEquals(model.getSum(0, 1), 0);
-        assertEquals(model.getSum(0, 8), 18);
-        assertEquals(model.getSum(8, 8), 0);
+        Assertions.assertEquals(model.getSum(0, 0), 15);
+        Assertions.assertEquals(model.getSum(0, 1), 0);
+        Assertions.assertEquals(model.getSum(0, 8), 18);
+        Assertions.assertEquals(model.getSum(8, 8), 0);
     }
 
     @Test
     void getColor() {
-        assertEquals(model.getColor(0, 0), 1);
-        assertEquals(model.getColor(0, 3), 2);
-        assertEquals(model.getColor(0, 8), 4);
-        assertEquals(model.getColor(8, 8), 3);
+        Assertions.assertEquals(model.getColor(0, 0), 1);
+        Assertions.assertEquals(model.getColor(0, 3), 2);
+        Assertions.assertEquals(model.getColor(0, 8), 4);
+        Assertions.assertEquals(model.getColor(8, 8), 3);
     }
 
 }

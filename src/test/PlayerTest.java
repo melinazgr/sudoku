@@ -1,3 +1,5 @@
+package test;
+import game.*;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

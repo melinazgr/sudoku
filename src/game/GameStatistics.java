@@ -1,13 +1,6 @@
-import java.io.Serializable;
+package game;
 
-/**
- * enum that stores which game type is played by a player
- */
-enum GameType{
-    Sudoku,
-    KillerSudoku,
-    Duidoku
-}
+import java.io.Serializable;
 
 /**
  * Manages and stores using an enum a game id attached to a game type

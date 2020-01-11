@@ -1,8 +1,10 @@
+package game;
+
 import javafx.application.Application;
 import javafx.stage.Stage;
 
 /**
- * Main class of the program
+ * game.Main class of the program
  * Complete class diagram and association shown in
  * <img src= "http://yuml.me/1fadf7c0.png" alt = "CLass diagram"></img>
  * @author Melina Zikou

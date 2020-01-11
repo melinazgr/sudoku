@@ -1,5 +1,9 @@
+package game;
+
+import game.GameStatistics;
+import game.GameType;
+
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 

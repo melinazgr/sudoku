@@ -1,4 +1,7 @@
+package test;
+import game.*;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -27,35 +30,35 @@ class ModelSudokuTest {
 
     @Test
     void getDisplayCell() {
-        assertEquals(model.getDisplayCell(0, 0), 0);
-        assertEquals(model.getDisplayCell(0, 2), 3);
-        assertEquals(model.getDisplayCell(4, 3), 4);
-        assertEquals(model.getDisplayCell(4, 6), 8);
+        Assertions.assertEquals(model.getDisplayCell(0, 0), 0);
+        Assertions.assertEquals(model.getDisplayCell(0, 2), 3);
+        Assertions.assertEquals(model.getDisplayCell(4, 3), 4);
+        Assertions.assertEquals(model.getDisplayCell(4, 6), 8);
     }
 
     @Test
     void checkSettingValues() {
-        assertEquals(model.isValidCell(0,0,5), true);
-        assertEquals(model.isValidCell(0,0,2), false);
-        assertEquals(model.isValidCell(0,1,8), true);
+        Assertions.assertEquals(model.isValidCell(0,0,5), true);
+        Assertions.assertEquals(model.isValidCell(0,0,2), false);
+        Assertions.assertEquals(model.isValidCell(0,1,8), true);
 
-        assertEquals(model.setCell(0,1,8), true);
-        assertEquals(model.setCell(0,2,3), false);
+        Assertions.assertEquals(model.setCell(0,1,8), true);
+        Assertions.assertEquals(model.setCell(0,2,3), false);
 
-        assertEquals(model.getDisplayCell(0,1), 8);
+        Assertions.assertEquals(model.getDisplayCell(0,1), 8);
 
-        assertEquals(model.setCell(1,1,6), false);
-        assertEquals(model.getDisplayCell(1,1), 0);
+        Assertions.assertEquals(model.setCell(1,1,6), false);
+        Assertions.assertEquals(model.getDisplayCell(1,1), 0);
     }
 
     @Test
     void clearCell() {
-        assertEquals(model.getDisplayCell(0,1), 0);
-        assertEquals(model.setCell(0,1,8), true);
-        assertEquals(model.getDisplayCell(0,1), 8);
+        Assertions.assertEquals(model.getDisplayCell(0,1), 0);
+        Assertions.assertEquals(model.setCell(0,1,8), true);
+        Assertions.assertEquals(model.getDisplayCell(0,1), 8);
 
         model.clearCell(0,1);
-        assertEquals(model.getDisplayCell(0,1), 0);
+        Assertions.assertEquals(model.getDisplayCell(0,1), 0);
     }
 
     @Test
@@ -66,7 +69,7 @@ class ModelSudokuTest {
         assertEquals(hints.contains(7), true);
         assertEquals(hints.contains(8), true);
 
-        assertEquals(model.setCell(0,0,5), true);
+        Assertions.assertEquals(model.setCell(0,0,5), true);
 
         hints = model.getHint(0,0);
 

@@ -1,3 +1,5 @@
+package game;
+
 /**
  * Defines an interface for menu navigation
  *

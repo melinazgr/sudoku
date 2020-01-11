@@ -1,5 +1,4 @@
-import java.util.ArrayList;
-import java.util.Arrays;
+package game;
 
 public class ModelKillerSudoku extends Model {
 

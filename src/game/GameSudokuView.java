@@ -1,3 +1,5 @@
+package game;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -78,7 +80,7 @@ public class GameSudokuView {
         CheckBox hintButton = new CheckBox("Hint");
         Button clearButton = new Button("Clear");
         Button solutionButton = new Button("Solution");
-        Button mainMenuButton = new Button("Main Menu");
+        Button mainMenuButton = new Button("game.Main Menu");
 
 
         //bottom action buttons
@@ -177,6 +179,11 @@ public class GameSudokuView {
                     // set cell color according to cell type
                     // in sudoku cells are gray
                     // in killer sudoku cells are colored
+                    // 1 = pink
+                    // 2 = blue
+                    // 3 = orange
+                    // 4 = yellow
+
                     switch(color)
                     {
                         case 1:
