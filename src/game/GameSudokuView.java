@@ -37,6 +37,7 @@ public class GameSudokuView {
     private boolean hintEnabled;
 
     private boolean isGameOver;
+    private Language language;
 
     GridPane[] grid;
     StackPane[] tiles;
@@ -49,12 +50,14 @@ public class GameSudokuView {
      * @param window main window of the game
      * @param menu main menu of the game
      */
-    public GameSudokuView(Model model, GameController controller, Stage window, MenuInterface menu) {
+    public GameSudokuView(Model model, GameController controller, Stage window, MenuInterface menu, Language language) {
         this.model = model;
         this.mainMenu = menu;
         this.controller = controller;
-        this.scene = createGamePanel();
         this.window = window;
+        this.language = language;
+        this.scene = createGamePanel();
+
         createPopup();
     }
 
@@ -77,10 +80,10 @@ public class GameSudokuView {
         gamePanel.setAlignment(Pos.CENTER);
 
         //create the bottom action buttons
-        CheckBox hintButton = new CheckBox("Hint");
-        Button clearButton = new Button("Clear");
-        Button solutionButton = new Button("Solution");
-        Button mainMenuButton = new Button("game.Main Menu");
+        CheckBox hintButton = new CheckBox(language.getText("hint"));
+        Button clearButton = new Button(language.getText("clear"));
+        Button solutionButton = new Button(language.getText("solution"));
+        Button mainMenuButton = new Button(language.getText("menu"));
 
 
         //bottom action buttons
@@ -277,9 +280,15 @@ public class GameSudokuView {
         }
 
         if (cellValue != 0) {
-            char ch = this.model.toCharCell(cellValue);
 
-            cellText[index].setText(String.valueOf(ch));
+            //create a key string for the bundle to use it
+            // the string is created by concatenating the word key
+            // followed by the number or letter that has to be written.
+
+            char ch = this.model.toCharCell(cellValue);
+            String key = new StringBuilder("key").append(ch).toString();
+
+            cellText[index].setText(language.getText(key));
         }
         else {
             cellText[index].setText("");
@@ -313,9 +322,14 @@ public class GameSudokuView {
         });
 
         for (int i = 1; i <= 9; i++) {
+
+            //create a key string for the bundle to use it
+            // the string is created by concatenating the word key
+            // followed by the number or letter that has to be written.
             char ch = this.model.toCharCell(i);
 
-            popupButtons[i] = new Button(String.valueOf(ch));
+            String key = new StringBuilder("key").append(ch).toString();
+            popupButtons[i] = new Button(language.getText(key));
             hbox.getChildren().add(popupButtons[i]);
 
             // the game success dialog is only shown when the last
@@ -338,7 +352,6 @@ public class GameSudokuView {
         // set auto hide
         popup.setAutoHide(true);
     }
-
 
     /**
      * Shows the popup in order for the user to select
@@ -373,7 +386,6 @@ public class GameSudokuView {
         popup.show(this.window);
     }
 
-
     /**
      * Shows the success dialog if the user solved the puzzle successfully
      * @return true if the user chose the OK option
@@ -381,9 +393,9 @@ public class GameSudokuView {
      */
     private boolean showSuccessDialog() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Success!!");
-        alert.setHeaderText("Congratulations, you won the game!");
-        alert.setContentText("Would you like to go back to play a new game?");
+        alert.setTitle(language.getText("success"));
+        alert.setHeaderText(language.getText("congrats"));
+        alert.setContentText(language.getText("playagain"));
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {

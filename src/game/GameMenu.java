@@ -13,6 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.util.Locale;
 
 /**
  * Creates and organises the main menu page.
@@ -32,13 +33,15 @@ public class GameMenu implements MenuInterface {
     private PlayerManagement playerManagement;
     private FileManagement fileManagement;
     private ComboBox playerBox;
+    private Language language;
 
     /**
      * Implements essential actions for the game to begin
      * @param window stage window
      */
-    public GameMenu(Stage window) {
+    public GameMenu(Stage window, Language language) {
         this.window = window;
+        this.language = language;
 
         playerManagement = new PlayerManagement();
         playerManagement.load(PLAYER_PATH);
@@ -53,6 +56,10 @@ public class GameMenu implements MenuInterface {
             e.printStackTrace();
         }
 
+        createScene();
+    }
+
+    private void createScene() {
         mainPane = createMenuScene();
         menuScene = new Scene(mainPane);
         menuScene.getStylesheets().add("app.css");
@@ -63,6 +70,7 @@ public class GameMenu implements MenuInterface {
      * @return the panel
      */
     private BorderPane createMenuScene() {
+
         //create the logo text
         GridPane logoPane = new GridPane();
         Text logo = new Text("Sudoku");
@@ -75,7 +83,7 @@ public class GameMenu implements MenuInterface {
         centerPane.getStyleClass().add("main");
 
         // select game label
-        Label selectGame = new Label("Select Game");
+        Label selectGame = new Label(language.getText("selectgame"));
         selectGame.setId("selectGameLabel");
 
         // button Sudoku
@@ -131,7 +139,8 @@ public class GameMenu implements MenuInterface {
         // create player pane
         HBox playerPane = new HBox();
         Label selectPlayer = new Label();
-        selectPlayer.setText("Select Player");
+        selectPlayer.setText(language.getText("selectplayer"));
+
         selectPlayer.setId("playersId");
 
         playerBox = new ComboBox();
@@ -150,18 +159,22 @@ public class GameMenu implements MenuInterface {
         //create language pane
         HBox languagePane = new HBox();
         Label lang = new Label();
-        lang.setText("Language  ");
+        lang.setText(language.getText("lang"));
 
-        Button buttonEn = new Button("English");
-        Button buttonGr = new Button("Greek");
+        Button buttonEn = new Button(language.getText("english"));
+        Button buttonGr = new Button(language.getText("greek"));
 
         languagePane.getChildren().addAll(lang, buttonEn, buttonGr);
 
         buttonEn.setOnAction(e -> {
-            System.out.println("english");
+            language.switchLanguage(new Locale("en", "US"));
+            createScene();
+            showMainMenu();
         });
         buttonGr.setOnAction(e -> {
-            System.out.println("greek");
+            language.switchLanguage(new Locale("el", "GR"));
+            createScene();
+            showMainMenu();
         });
 
         BorderPane root = new BorderPane();
@@ -230,7 +243,7 @@ public class GameMenu implements MenuInterface {
 
             player.addGame(nextGame, gameType);
 
-            GameSudokuView gameSudoku = new GameSudokuView(model, controller, window, this);
+            GameSudokuView gameSudoku = new GameSudokuView(model, controller, window, this, language);
             window.setScene(gameSudoku.scene);
         }
     }
