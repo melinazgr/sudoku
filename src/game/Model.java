@@ -27,6 +27,13 @@ public abstract class Model {
     public abstract void load(String text);
     public abstract void load(GameDefinition game);
 
+    /**
+     * Gets the user display array, containing all the moves of the player
+     * @param row row coordinate
+     * @param col column coordinate
+     * @return the value in the specific coordinates, if the coordinates are valid
+     *         -1 otherwise
+     */
     public int getDisplayCell(int row, int col) {
         if((row >= 0 && row < getSize()) || (col >= 0 && col < getSize())){
             return userDisplay[row][col];
@@ -113,7 +120,7 @@ public abstract class Model {
 
         ArrayList<Integer> numbers = new ArrayList<>();
 
-        for (int i = 1; i <= 9; i++) {
+        for (int i = 1; i <= getSize(); i++) {
             if(!union.contains(i)){
                 numbers.add(i);
             }
@@ -125,17 +132,13 @@ public abstract class Model {
     /**
      * @return the size of the blocks in the sudoku ( 9 by 9 board)
      */
-    public int getSize() {
-        return 9;
-    }
+    abstract public int getSize();
 
     /**
      * Each board is divided into smaller boxes.
      * @return the number of cells in column/row of a box
      */
-    public int getGroupSize() {
-        return 3;
-    }
+    abstract public int getGroupSize();
 
     /**
      * Clears a cell from the previous choice of hte user
@@ -216,12 +219,12 @@ public abstract class Model {
      * @return the 2 - dimensional array
      */
     protected int[][] parseSudokuValues(String s) {
-        int [][] data = new int[9][9];
+        int [][] data = new int[getSize()][getSize()];
 
         int i = 0;
         for (char c: s.toCharArray()) {
-            int row = i / 9;
-            int col = i % 9;
+            int row = i / getSize();
+            int col = i % getSize();
             data[row][col] = c - '0';
             i++;
         }
@@ -235,7 +238,7 @@ public abstract class Model {
      */
     public ArrayList<Integer> getColumn(int col){
         ArrayList<Integer> list = new ArrayList<Integer>();
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < getSize(); i++) {
             list.add(userDisplay[i][col]);
         }
 
@@ -249,7 +252,7 @@ public abstract class Model {
      */
     public ArrayList<Integer> getRow(int row){
         ArrayList<Integer> list = new ArrayList<Integer>();
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < getSize(); i++) {
             list.add(userDisplay[row][i]);
         }
 
@@ -265,12 +268,12 @@ public abstract class Model {
     public ArrayList<Integer> getBox(int row, int col){
         ArrayList<Integer> list = new ArrayList<Integer>();
 
-        int startCol = col / 3;
-        int startRow = row / 3;
+        int startCol = col / getGroupSize();
+        int startRow = row / getGroupSize();
 
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                list.add(userDisplay[startRow * 3 + i][startCol * 3 + j]);
+        for (int i = 0; i < getGroupSize(); i++) {
+            for (int j = 0; j < getGroupSize(); j++) {
+                list.add(userDisplay[startRow * getGroupSize() + i][startCol * getGroupSize() + j]);
             }
         }
 

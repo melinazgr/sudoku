@@ -83,4 +83,14 @@ public class ModelKillerSudoku extends Model {
         }
         return -1;
     }
+
+    @Override
+    public int getSize() {
+        return 9;
+    }
+
+    @Override
+    public int getGroupSize() {
+        return 3;
+    }
 }

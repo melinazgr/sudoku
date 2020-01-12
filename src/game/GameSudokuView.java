@@ -37,6 +37,8 @@ public class GameSudokuView {
     private boolean hintEnabled;
 
     private boolean isGameOver;
+    private boolean isGameDuidoku;
+
     private Language language;
 
     GridPane[] grid;
@@ -50,13 +52,14 @@ public class GameSudokuView {
      * @param window main window of the game
      * @param menu main menu of the game
      */
-    public GameSudokuView(Model model, GameController controller, Stage window, MenuInterface menu, Language language) {
+    public GameSudokuView(Model model, GameController controller, Stage window, MenuInterface menu, Language language, boolean isGameDuidoku) {
         this.model = model;
         this.mainMenu = menu;
         this.controller = controller;
         this.window = window;
         this.language = language;
         this.scene = createGamePanel();
+        this.isGameDuidoku = isGameDuidoku;
 
         createPopup();
     }
@@ -110,7 +113,13 @@ public class GameSudokuView {
 
         //HBox that has buttons in the bottom of the main panel
         HBox bottomPanel = new HBox();
-        bottomPanel.getChildren().addAll(hintButton, clearButton, solutionButton, mainMenuButton);
+
+        if(!this.isGameDuidoku){
+            bottomPanel.getChildren().addAll(hintButton, clearButton, solutionButton, mainMenuButton);
+        }
+        else if (this.isGameDuidoku){
+            bottomPanel.getChildren().addAll(hintButton, mainMenuButton);
+        }
 
         //sets distance between the bottom buttons
         bottomPanel.setMargin(clearButton, new Insets(0,0,0,20));
@@ -321,7 +330,7 @@ public class GameSudokuView {
             popup.hide();
         });
 
-        for (int i = 1; i <= 9; i++) {
+          for (int i = 1; i <= 9; i++) {
 
             //create a key string for the bundle to use it
             // the string is created by concatenating the word key

@@ -68,4 +68,14 @@ public class ModelSudoku extends Model{
         }
         return false;
     }
+
+    @Override
+    public int getSize() {
+        return 9;
+    }
+
+    @Override
+    public int getGroupSize() {
+        return 3;
+    }
 }

@@ -1,5 +1,4 @@
 package game;
-import javafx.beans.value.ChangeListener;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -34,6 +33,9 @@ public class GameMenu implements MenuInterface {
     private FileManagement fileManagement;
     private ComboBox playerBox;
     private Language language;
+
+    private boolean isGameDuidoku
+            ;
 
     /**
      * Implements essential actions for the game to begin
@@ -84,7 +86,7 @@ public class GameMenu implements MenuInterface {
 
         // select game label
         Label selectGame = new Label(language.getText("selectgame"));
-        selectGame.setId("selectGameLabel");
+        selectGame.setId("select");
 
         // button Sudoku
         Button buttonSud = new Button("Sudoku");
@@ -125,6 +127,7 @@ public class GameMenu implements MenuInterface {
         centerPane.add(buttonWordoku, 0, 4);
         buttonSud.setOnAction(e -> sudokuGameButtonAction());
         buttonKillSud.setOnAction(e -> killerSudokuGameButtonAction());
+        buttonDuidoku.setOnAction(e-> duidokuGameButtonAction());
 
         buttonSud.setLayoutX(70);
         buttonSud.setLayoutY(80);
@@ -141,7 +144,8 @@ public class GameMenu implements MenuInterface {
         Label selectPlayer = new Label();
         selectPlayer.setText(language.getText("selectplayer"));
 
-        selectPlayer.setId("playersId");
+        selectPlayer.setId("select");
+        playerPane.setMargin(selectPlayer, new Insets(50, 0, 0, 0));
 
         playerBox = new ComboBox();
         playerBox.getItems().add(DEFAULT_PLAYER_NAME);
@@ -154,15 +158,22 @@ public class GameMenu implements MenuInterface {
 
 
         playerPane.getChildren().addAll(selectPlayer, playerBox);
+        playerPane.setMargin(playerBox, new Insets(90, 200, 0 ,0));
         centerPane.add(playerPane, 0, 5);
 
         //create language pane
         HBox languagePane = new HBox();
         Label lang = new Label();
         lang.setText(language.getText("lang"));
+        languagePane.setMargin(lang, new Insets(0, 10, 0, 0));
+
 
         Button buttonEn = new Button(language.getText("english"));
+        languagePane.setMargin(buttonEn, new Insets(0, 10, 0, 0));
+
         Button buttonGr = new Button(language.getText("greek"));
+        languagePane.setMargin(buttonGr, new Insets(0, 10, 0, 0));
+
 
         languagePane.getChildren().addAll(lang, buttonEn, buttonGr);
 
@@ -188,10 +199,12 @@ public class GameMenu implements MenuInterface {
         return root;
     }
 
+
     /**
      *  Action when button Killer Sudoku is clicked
      */
     private void killerSudokuGameButtonAction() {
+        isGameDuidoku = false;
         ModelKillerSudoku model = new ModelKillerSudoku();
         GameController controller = new GameController(model);
 
@@ -204,12 +217,24 @@ public class GameMenu implements MenuInterface {
      *  Action when button Sudoku is clicked
      */
     private void sudokuGameButtonAction() {
+        isGameDuidoku = false;
         ModelSudoku model = new ModelSudoku(wordokuGame);
         GameController controller = new GameController(model);
 
         GameType gameType = GameType.Sudoku;
 
         chooseGame(model, controller, gameType);
+    }
+
+    private void duidokuGameButtonAction() {
+        isGameDuidoku = true;
+        ModelDuidoku model = new ModelDuidoku(wordokuGame);
+        GameController controller = new GameController(model);
+
+        GameType gameType = GameType.Duidoku;
+
+        GameSudokuView gameDuidoku = new GameSudokuView(model, controller, window, this, language, isGameDuidoku);
+        window.setScene(gameDuidoku.scene);
     }
 
     /**
@@ -219,6 +244,7 @@ public class GameMenu implements MenuInterface {
      * @param gameType
      */
     private void chooseGame(Model model, GameController controller, GameType gameType) {
+        isGameDuidoku = false;
         Player player = new Player();
 
         if (playerBox.getValue() != null && !playerBox.getValue().toString().isEmpty()){
@@ -243,7 +269,7 @@ public class GameMenu implements MenuInterface {
 
             player.addGame(nextGame, gameType);
 
-            GameSudokuView gameSudoku = new GameSudokuView(model, controller, window, this, language);
+            GameSudokuView gameSudoku = new GameSudokuView(model, controller, window, this, language, isGameDuidoku);
             window.setScene(gameSudoku.scene);
         }
     }
