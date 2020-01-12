@@ -34,8 +34,7 @@ public class GameMenu implements MenuInterface {
     private ComboBox playerBox;
     private Language language;
 
-    private boolean isGameDuidoku
-            ;
+    public boolean isGameDuidoku;
 
     /**
      * Implements essential actions for the game to begin
@@ -210,7 +209,7 @@ public class GameMenu implements MenuInterface {
 
         GameType gameType = GameType.KillerSudoku;
 
-        chooseGame(model, controller, gameType);
+        chooseGame(model, controller, gameType, isGameDuidoku);
     }
 
     /**
@@ -223,7 +222,7 @@ public class GameMenu implements MenuInterface {
 
         GameType gameType = GameType.Sudoku;
 
-        chooseGame(model, controller, gameType);
+        chooseGame(model, controller, gameType, isGameDuidoku);
     }
 
     private void duidokuGameButtonAction() {
@@ -243,8 +242,7 @@ public class GameMenu implements MenuInterface {
      * @param controller
      * @param gameType
      */
-    private void chooseGame(Model model, GameController controller, GameType gameType) {
-        isGameDuidoku = false;
+    private void chooseGame(Model model, GameController controller, GameType gameType, boolean isGameDuidoku) {
         Player player = new Player();
 
         if (playerBox.getValue() != null && !playerBox.getValue().toString().isEmpty()){

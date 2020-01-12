@@ -19,6 +19,11 @@ public class ModelDuidoku extends Model {
 
     public ModelDuidoku(){ wordoku = false; }
 
+    @Override
+    public boolean gameOver() {
+
+        return false;
+    }
 
     @Override
     public void load(String text) {
@@ -39,4 +44,6 @@ public class ModelDuidoku extends Model {
     public int getGroupSize() {
         return 2;
     }
+
+
 }

@@ -1,5 +1,8 @@
 package game;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 /**
  * This class implements all the actions the UI performs on the game model.
  * It implements the MVC pattern (game.Model View Controller)
@@ -44,5 +47,21 @@ public class GameController {
      */
     public void showSolution() {
         this.model.solveSudoku();
+    }
+
+    public boolean computerMove() {
+        for (int i = 0; i < model.getSize() ; i++) {
+            for (int j = 0; j < model.getSize(); j++) {
+                  if(model.getDisplayCell(i,j) == 0)
+                  {
+                      ArrayList <Integer> validValues = model.getHint(i,j);
+                      if(!validValues.isEmpty()){
+                          model.setCell(i,j, validValues.get(0));
+                          return true;
+                      }
+                  }
+            }
+        }
+        return false;
     }
 }

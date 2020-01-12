@@ -58,8 +58,8 @@ public class GameSudokuView {
         this.controller = controller;
         this.window = window;
         this.language = language;
-        this.scene = createGamePanel();
         this.isGameDuidoku = isGameDuidoku;
+        this.scene = createGamePanel();
 
         createPopup();
     }
@@ -87,7 +87,6 @@ public class GameSudokuView {
         Button clearButton = new Button(language.getText("clear"));
         Button solutionButton = new Button(language.getText("solution"));
         Button mainMenuButton = new Button(language.getText("menu"));
-
 
         //bottom action buttons
 
@@ -117,7 +116,8 @@ public class GameSudokuView {
         if(!this.isGameDuidoku){
             bottomPanel.getChildren().addAll(hintButton, clearButton, solutionButton, mainMenuButton);
         }
-        else if (this.isGameDuidoku){
+
+        else {
             bottomPanel.getChildren().addAll(hintButton, mainMenuButton);
         }
 
@@ -328,6 +328,8 @@ public class GameSudokuView {
             controller.setCell(lastPopupRow, lastPopupCol, 0);
             updateGamePanel();
             popup.hide();
+
+
         });
 
           for (int i = 1; i <= 9; i++) {
@@ -352,6 +354,11 @@ public class GameSudokuView {
                     if(showSuccessDialog()){
                         this.mainMenu.showMainMenu();
                     }
+                }
+
+                if(isGameDuidoku){
+                    controller.computerMove();
+                    updateGamePanel();
                 }
             });
         }
