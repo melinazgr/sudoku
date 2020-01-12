@@ -30,7 +30,6 @@ public class ModelSudoku extends Model{
     @Override
     public void load(String text) {
 
-
         text = text.replace('.', '0');
         String[] parts = text.split(",");
         display = parseSudokuValues(parts[0]);
@@ -42,8 +41,15 @@ public class ModelSudoku extends Model{
     public void load(GameDefinition game) {
 
         display = game.getDisplay();
-        userDisplay = game.getDisplay();
         solution = game.getSolution();
+
+        userDisplay = new int [getSize()][getSize()];
+
+        for (int i = 0; i < getSize(); i++) {
+            for (int j = 0; j < getSize() ; j++) {
+                userDisplay[i][j] = display[i][j];
+            }
+        }
     }
 
     /**
